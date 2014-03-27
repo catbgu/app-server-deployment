@@ -1,0 +1,46 @@
+CACHE MANIFEST
+# v1.1.6 - 2013-11-07
+
+CACHE:
+# CSS files
+http://www.invid.io/inspired/static/css/foundation.css
+http://www.invid.io/inspired/static/css/fonts/HelveticaNeueLTPro-Lt.otf
+http://www.invid.io/inspired/static/css/fonts/mtcorsva.min.ttf
+http://www.invid.io/inspired/static/css/fonts/mtcorsva.ttf
+
+# Images
+#http://www.invid.io/inspired/static/img/landing-poster/1.jpg
+#http://www.invid.io/inspired/static/img/landing-poster/2.jpg
+#http://www.invid.io/inspired/static/img/landing-poster/3.jpg
+#http://www.invid.io/inspired/static/img/landing-poster/4.jpg
+#http://www.invid.io/inspired/static/img/landing-poster/5.jpg
+#http://www.invid.io/inspired/static/img/landing-poster/6.jpg
+#http://www.invid.io/inspired/static/img/music/featured/feat-1.png
+#http://www.invid.io/inspired/static/img/music/featured/feat-2.png
+#http://www.invid.io/inspired/static/img/music/featured/feat-3.png
+#http://www.invid.io/inspired/static/img/music/artists/austin-mahone/cover.png
+#http://www.invid.io/inspired/static/img/music/artists/taylor-swift/cover.png
+#http://www.invid.io/inspired/static/img/music/artists/demi-lovato/cover.png
+#http://www.invid.io/inspired/static/img/music/artists/danna-paola/cover.png
+#http://www.invid.io/inspired/static/img/music/artists/avril-lavigne/cover.png
+#http://www.invid.io/inspired/static/img/spinner.gif
+
+# JavaScript files
+http://www.invid.io/inspired/static/js/js.functions.js
+http://www.invid.io/inspired/static/js/js.functions-landing.js
+http://www.invid.io/inspired/static/js/fastclick.js
+http://www.invid.io/inspired/static/js/foundation/foundation.js
+http://www.invid.io/inspired/static/js/foundation/foundation.orbit.js
+http://www.invid.io/inspired/static/js/foundation/foundation.reveal.js
+http://www.invid.io/inspired/static/js/foundation/foundation.clearing.js
+http://www.invid.io/inspired/static/js/vendor/jquery.js
+http://www.invid.io/inspired/static/js/vendor/zepto.js
+
+NETWORK:
+*
+
+#SETTINGS:
+#prefer-online - indicates that cached data should not be used when the browser has an active internet connection
+
+FALLBACK:
+*.jpg #http://www.invid.io/inspired/static/img/placeholder.png

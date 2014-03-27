@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" manifest="inspired.appcache"> <![endif]-->
+<!--[if gt IE 8]><!--> <!-- <html class="no-js" lang="en" manifest="inspired.appcache"> --> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable = no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta name="description" content="Shop styles from the hottest music videos. Inspired is the destination to keep up with your favorite celebrity fashion trends." />
+  <meta name="keywords" content="celebrity fashion, celebrity inspired style ideas, shop by celebrity, celebrity shopping app, celebrities fashion looks, celebrity clothing, cheap celebrity fashion, trendy clothing, shopping app clothes, fashion shopping app, fashion style apps, style advice app" />
+  <meta name="author" content="inspiredapp.tv" /> 
+
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="http://www.inspiredapp.tv"/>
+  <meta property="og:site_name" content="Inspired"/> 
+  <meta property="og:title" content="Inspired">
+  <meta property="og:description" content="Shop styles from the hottest music videos. Inspired is the destination to keep up with your favorite celebrity fashion trends." />
+  <meta property="og:image" content="../static/img/icons/icon-196.png" />
+
+  <link rel="canonical" href="http://www.inspiredapp.tv/">
+  <link rel="publisher" href="https://plus.google.com/102711944033891399361"/>       
+
+  <title>Inspired | Music Video</title>
+
+  <!-- Icon -->
+  <link rel="apple-touch-icon" href="../static/img/icons/icon-76.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="../static/img/icons/icon-76.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="../static/img/icons/icon-120.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="../static/img/icons/icon-152.png" />  
+  <link rel="shortcut icon" sizes="196x196" href="../static/img/icons/icon-196.png">
+  
+  <!-- Style CSS -->
+  <link rel="stylesheet" href="../static/css/foundation.css" /> 
+</head>
+<body>
+  <div class="screen">
+    <div class="settings-menu">
+      <a class="settings-back" href="javascript:;">Back</a>
+      <a class="settings-back-back" href="javascript:;">Back</a>
+      <a class="settings-logout" href="javascript:;">Logout</a>
+      <div class="settings-title">Settings</div>      
+      <ul class="settings-menu-list">
+        <li class="my-profile">My Profile</li>
+        <li class="email-preferences">Email Preferences</li>
+        <li class="invite-friends">Invite Friends</li>
+        <li class="send-feedback">Send Feedback</li>
+        <li class="help">Help</li>
+        <li class="legal">Legal</li>
+      </ul>
+      <div class="ajax-container"></div>
+      <div class="settings-footer">Inspired [V-0.1]</br>&#169; Invidio, Inc 2014</div>  
+    </div>   
+    <div class="content">
+      <nav class="top-bar">
+          <p class="name">Inspired</p>
+      </nav>
+      <div class="spinner-wrap"><div id="spinner"><img src="../static/img/spinner.gif"></div></div>
+      <div class="main-container">
+        <!-- Image Slider -->
+        <div class="row banner-row">
+          <div class='twelve columns featured-music-videos-container'>
+            <div data-orbit class='featured-music-videos'>
+              <div class="fx-container fx-container1" onclick="">
+                <div class="shop-btn">Shop the look</div>
+                <img class="item item1" src="../static/img/preloader-img.png" />
+                <div class="band band1">Loading...</div>
+              </div>
+              <div class="fx-container fx-container2" onclick="">
+                <div class="shop-btn">Shop the look</div>
+                <img class="item item2" src="" />
+                <div class="band band2"></div>
+              </div>
+              <div class="fx-container fx-container3" onclick="">
+                <div class="shop-btn">Shop the look</div>
+                <img class="item item3" src=""/>
+                <div class="band band3"></div>
+              </div>
+            </div>
+          </div> 
+        </div> 
+       <!-- Artist List -->
+        <div class="row banner-row artist-list">
+          <ul class='medium-block-grid-4 large-block-grid-6'  id='grid' style='width: 100.1%;'></ul>
+        </div>  
+      </div> 
+      <div id="footer-container"><!-- Dynamic Content --></div> 
+    </div>  
+  </div>
+  <!--FOOTER-->
+  <div class="footer">
+    <a href="javascript:;" class="footer-settings"></a>
+    <a href="javascript:;" class="footer-btn footer-bookmarks">Bookmarks</a>
+    <a href="javascript:;" class="footer-btn footer-following">Following</a>
+  </div>
+   
+<!--SCRIPTS-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="../static/js/foundation/foundation.js"></script>
+  <script defer src="../static/js/foundation/foundation.orbit.js"></script>
+  <script defer src="../static/js/js.functions.js"></script>
+  <script defer src="../static/js/fastclick.js"></script>
+  <script defer src="../static/js/stackmob-music.js"></script>
+  <script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.9.2-bundled-min.js"></script>
+  <script defer type="text/javascript" >
+      //add fastclick: https://github.com/ftlabs/fastclick
+      window.addEventListener('load', function() {
+          FastClick.attach(document.body);
+      }, false);   
+  
+     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-42670109-1', 'invid.io');ga('send', 'pageview');
+  </script> 
+</body>
+</html>

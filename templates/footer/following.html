@@ -1,0 +1,64 @@
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a> 
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a> 
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a>             
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a>   
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a>   
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a>      
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a>      
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name">Following-Test</div>
+</a>      
+<a href="../templates/artists/little-mix/artist.html" class="four columns artist-btn">
+  <img class="artist-img" src="../static/img/music/artists/little-mix/cover.png" />
+  <div class="artist-name"  style="color:red">Following-Test_LAST</div>
+</a> 
+
+<script type="text/javascript">
+  var PANEL_SPEED = 350,
+      PANEL_EASING_1 = 'cubic-bezier(0.23,1,0.32,1)',
+      PANEL_EASING_2 = 'cubic-bezier(.09,.32,.57,1.65)';    
+
+  $(document).ready(function() {
+    if('ontouchstart' in window){var click = 'touchstart';}
+      else{var click = 'click';}
+    $('.unfollow-btn').live(click, function(e){
+      $(this).closest('.artist-btn').fadeOut(400).remove();
+      $('.unfollow-btn').remove();
+      e.preventDefault();
+    });  
+  });
+  $('.artist-btn').on('swipeLeft', function(e){
+    $('.artist-btn').animate({translateX: '0'}, PANEL_SPEED, PANEL_EASING_1);
+    $('.unfollow-btn').remove();
+    $(this).append('<div class="unfollow-btn">UNFOLLOW</div>'); 
+    $(this).animate({translateX: '-75px'}, PANEL_SPEED, PANEL_EASING_2);
+    e.preventDefault();    
+  });
+  $('.artist-btn').on('swipeRight', function(e){
+    $('.unfollow-btn').remove();
+    $('.artist-btn').animate({translateX: '0'}, PANEL_SPEED, PANEL_EASING_1);
+    e.preventDefault();    
+  }); 
+</script>
