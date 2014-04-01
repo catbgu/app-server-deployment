@@ -48,13 +48,6 @@ items.query(q, {
       //Artist.html page
       $(".artist-video-btn").removeClass("four columns artist-video-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='shop-icon' src='http://inspiredapp.tv/img/icons/shop-icon-small.png' style='width: 55px; height: 55px;' />");
       $(".video-title").removeClass("video-title").addClass("artist-name");
-	  
-	  //No footer in Desktop view
-	  $('.footer').css('display', 'none');
-	  var tablet = navigator.userAgent.match(/iPad/i);		
-	  if(tablet) {
-		$('.footer').css('display', 'block');
-	  }
     }
   }
 });

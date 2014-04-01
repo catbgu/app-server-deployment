@@ -15,7 +15,7 @@ items.query(q, {
     var resultsAsJSON = results.toJSON();
     for(var i = 0; i < resultsAsJSON.length; i++) {
       $( "#grid" ).append(""+
-			"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(' ', '-').toLowerCase()  + "/artist.html\";return false;' class='four columns artist-btn'>" +
+			"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(' ', '-').toLowerCase()  + "/artist.html\"' class='four columns artist-btn'>" +
 		    	"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + "/small.png'>" +
 			    "<div class='artist-name'>" + resultsAsJSON[i]['artist_name'] + "</div>" +
 		    "</a>");
@@ -26,13 +26,6 @@ items.query(q, {
 		$(".artist-btn").removeClass("four columns artist-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='music-icon' src='http://inspiredapp.tv/img/icons/music-icon-small.png' />");
 		$(".artist-name").wrap("<div class='video-info'></div>");
 		$(".artist-name").wrapInner("<h5></h5>");
-		
-		//No footer in Desktop view
-		$('.footer').css('display', 'none');
-	    var tablet = navigator.userAgent.match(/iPad/i);		
-	    if(tablet) {
-			$('.footer').css('display', 'block');
-		}
 	}
   }
 });
@@ -46,6 +39,8 @@ $(document).ready(function(){
 	b.orderAsc('video_title').equals('featured', 'true');
 	items2.query(b, {
 		success: function(results) {
+			//FIREFOX SPACE FIX
+			$(".featured-music-videos").css("height", $(".active").height());
 		 	var resultsAsJSON = results.toJSON();
 			var b = 1;
 			var c = 1;
@@ -74,10 +69,9 @@ $(document).ready(function(){
 			  	});
 			  	c++;
 			}
-			$(".featured-music-videos").css("height", $(".fx-container").height());
 		}
 	});
-	
+	  	
 });
 
 

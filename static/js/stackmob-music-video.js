@@ -32,6 +32,7 @@ $(document).ready(function() {
         success: function(results) {
         var resultsAsJSON = results.toJSON();
         $("iframe").attr('src', '//www.youtube-nocookie.com/embed/'+ resultsAsJSON[k]["video_url"]  +'?wmode=opaque&amp;modestbranding=1&amp;rel=0');
+		
         $(".video-poster").css('background','#000');
 
         for(var c = 0; c < resultsAsJSON.length; c++) {        
@@ -50,10 +51,16 @@ $(document).ready(function() {
                               "<div class='product_price'>$" + resultsAsJSON[k]['retailer_price'][i]  + "</div>" +
 							  "</div>"+
 							  "<div class='button_container'>"+
-							  "<div onclick='window.open(&#39;" + resultsAsJSON[k]['buy_url'][i] + "&#39;,&#39;popupwindow&#39;);return false;' class='button add' target='_blank'>Purchase</div>"+
+							  "<div onclick='window.open(&#39;" + resultsAsJSON[k]['buy_url'][i] + "&#39;,&#39;popupwindow&#39;);return false;' class='purchase-button add' target='_blank'>Purchase</div>"+
 
 							  "<a href='' class='button star'>Bookmark</a>"+
 							  "<a href='' class='button share-product'>Share</a>"+
+							  "<div class='share-buttons closed'>"+
+								"<a class='facebook'></a>"+
+								"<a class='twitter'></a>"+
+								"<a class='pinterest'></a>"+
+								"<a class='email-share'></a>"+
+							  "</div>"+	
 							  "</div>"+
                             "</div>";
             }
@@ -72,6 +79,12 @@ $(document).ready(function() {
             k++;
             }
 
+			if( 'ontouchstart' in window ){ 
+				var click = 'singleTap'; 
+			}else{ 
+				var click = 'click';
+			}
+			
             //SLIDER ON MUSIC VIDEO PAGE
             $('.iosSlider').iosSlider({
               desktopClickDrag: true,
@@ -219,26 +232,123 @@ $(document).ready(function() {
             if(mobile){
               $('iframe').css('height','200px');
 			  $('.looks-container').css('padding-bottom', '35px');
-            } else {
-			  $('.footer').css('display', 'none');
-			  var tablet = navigator.userAgent.match(/iPad/i);		
-			  if(tablet) {
-				$('.footer').css('display', 'block');
-			  }
-			}
+			  
+            }
 
-            $('.item').live('click', function(e){
+            $('.item').live(click, function(e){
               e.stopImmediatePropagation();
               e.preventDefault();
             });
-			$('.item').live('mouseenter mouseleave', function(event){
-				if (event.type == 'mouseenter') {	
-					$(this).children().last().fadeIn();
+			
+			var mobile = navigator.userAgent.match(/iPhone|iPad|Android|Windows Phone|BlackBerry/i);
+            if(mobile){
+
+				var WP = navigator.userAgent.match(/Windows Phone/i);
+				//Setting this to "live" will not work on Windows Phone.
+				if(WP) {
+					$('.item').on("click", function(e){
+						if($(this).children().last().css('display') == 'none') {
+						
+							$(this).css('background-color', '#8f8f8f');
+							$(this).find('img').css('opacity', '0.3');
+							
+							$(this).children().last().css('display', 'block');	
+						
+						} else {
+						
+							$(this).css('background-color', '#fff');
+							$(this).find('img').css('opacity', '1');
+							
+							$(this).children().last().css('display', 'none');
+							
+							var target = $(e.target);
+							if ($(e.target).is('.button') || target.is('.facebook') || target.is('.twitter') || target.is('.pinterest') || target.is('.email-share')) {
+							
+								$(this).children().last().css('display', 'block');
+								$(this).css('background-color', '#8f8f8f');
+								$(this).find('img').css('opacity', '0.3');
+								e.stopImmediatePropagation();
+								e.preventDefault();
+								return;
+								
+							}
+						}
+					});	
+					$('.star').on("click", function(e){
+						if($(this).attr('style')) {
+													
+							$(this).html('Bookmark');
+							$(this).removeAttr('style');
+							
+						} else {
+							
+							$(this).html('Bookmarked');
+							$(this).css('color', 'rgb(48, 149, 184)');
+							$(this).css('padding-left', '20px;');
+							$(this).css('padding-top', '15px;');
+							$(this).css('font-size', '0.88em');
+							
+						  }
+					});
 				} else {
-					$(this).children().last().fadeOut();
+					$('.item').live("click", function(e){
+						if($(this).children().last().css('display') == 'none') {
+						
+							$(this).css('background-color', '#8f8f8f');
+							$(this).find('img').css('opacity', '0.3');
+							
+							$(this).children().last().css('display', 'block');	
+						
+						} else {
+						
+							$(this).css('background-color', '#fff');
+							$(this).find('img').css('opacity', '1');
+							
+							$(this).children().last().css('display', 'none');
+							
+							var target = $(e.target);
+							if (target.is('.button') || target.is('.facebook') || target.is('.twitter') || target.is('.pinterest') || target.is('.email-share')) {
+							
+								$(this).children().last().css('display', 'block');
+								$(this).css('background-color', '#8f8f8f');
+								$(this).find('img').css('opacity', '0.3');
+								e.stopImmediatePropagation();
+								e.preventDefault();
+								return;
+								
+							}
+						}
+					});	
 				}	
+			} else {
+				$('.item').live('mouseenter', function(event){
+					$(this).children().last().fadeIn();
+				});
+				$('.item').live('mouseleave', function(event){
+					  $(this).children().last().fadeOut();
+					  $('.share-product').next().removeClass('open').addClass('closed');
+				});
+			}
+			
+			// setting it to "live" will not work in mobile! 
+			$('.share-product').on("click", function(e) {
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				
+				
+				if($(this).next().hasClass('closed')) {
+				
+					
+					$(this).next().removeClass('closed').addClass('open');
+					
+				} else {
+				
+					$(this).next().removeClass('open').addClass('closed');
+					
+				}
+				
 			});
-        }
+		}
       });   
     }
   });
@@ -327,13 +437,17 @@ $(document).ready(function() {
 
 	var item_title = "";
 	var item_buyURL = "";
-	$(".star").live('click',function(e){
+	$(".star").live("click",function(e){
 	  e.preventDefault(); 
 	  item_title = $(this).parent(".button_container").parent(".item").find(".product_container").find(".product_title").text().slice(0, -1);
 	  item_buyURL = $(this).parent(".button_container").find(".add").attr("onclick").replace("window.open('", "").replace("','popupwindow');return false;", "");
 	  console.debug(item_buyURL);
 	  if($(this).hasClass('selected')) {
 	    $(this).removeClass('selected');
+		
+		$(this).html('Bookmark');
+		$(this).removeAttr('style');
+		
 	    // mark.destroyAll(a, {
 	    //   success: function(model) {
 	    //     console.debug(model);
@@ -346,6 +460,14 @@ $(document).ready(function() {
 	    // });
 	  } else {
 	    $(this).addClass('selected');
+		
+		$(this).html('Bookmarked');
+		$(this).css('color', 'rgb(48, 149, 184)');
+		$(this).css('padding-left', '20px;');
+		$(this).css('padding-top', '15px;');
+		$(this).css('font-size', '0.88em');
+		
+		
 	    // alert('if has class not selected');
 	    // console.debug($(".product-title").text());
 	    // var myBookmark = new Bookmark({ username: user, artist_name: artist_name, video_url: video_url, product_title: product_image_title });
