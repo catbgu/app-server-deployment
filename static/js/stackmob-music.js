@@ -26,6 +26,7 @@ items.query(q, {
 		$(".artist-btn").removeClass("four columns artist-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='music-icon' src='http://inspiredapp.tv/img/icons/music-icon-small.png' />");
 		$(".artist-name").wrap("<div class='video-info'></div>");
 		$(".artist-name").wrapInner("<h5></h5>");
+
 	}
   }
 });

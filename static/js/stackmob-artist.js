@@ -17,7 +17,6 @@ items.query(q, {
   success: function(results) {
     $(".artist-page-band span").text(artist);
     var resultsAsJSON = results.toJSON();
-    console.debug(resultsAsJSON[0].artists[1]);
     if(resultsAsJSON[0].artists[0] != artist) {
       // alert(' not equal');
       feat_artist = resultsAsJSON[0].artists[0];
@@ -78,7 +77,7 @@ fol.query(f, {
 if(!StackMob.isLoggedIn()){
     $(".follow-btn").live('click',function(){
       //NEED TO BE EDITED.
-      alert("not logged in!");
+      alert("Please login first.");
       prompt_login();
     });
 } else {

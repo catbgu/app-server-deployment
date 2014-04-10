@@ -3,6 +3,10 @@ StackMob.init({
   publicKey:        'da5f9b0d-676e-4d57-be03-e8436eb6313b',
   apiVersion:       1
 });
+var artist_name = window.location.pathname.split('/');
+var artist1 = artist_name[2].replace(/\-/g, ' ');
+var artist = artist1.replace(/\b./g, function(m){ return m.toUpperCase(); });
+var video_name = artist_name[3].substr(0, artist_name[3].indexOf('.')).replace(/\%20/g, ' ');
 $(document).ready(function() {
 
   var look = StackMob.Model.extend({ schemaName: 'Look' });
@@ -11,11 +15,9 @@ $(document).ready(function() {
   var k = 0;
   var item = new looks();
   var a = new StackMob.Collection.Query();
-  var artist_name = window.location.pathname.split('/');
-  var artist1 = artist_name[2].replace(/\-/g, ' ');
-  var artist = artist1.replace(/\b./g, function(m){ return m.toUpperCase(); });
+  
 
-  var video_name = artist_name[3].substr(0, artist_name[3].indexOf('.')).replace(/\%20/g, ' ');
+  
 
   var video = StackMob.Model.extend({ schemaName: 'Music_Video' });
   var videos = StackMob.Collection.extend({ model: video }); 
@@ -51,10 +53,10 @@ $(document).ready(function() {
                               "<div class='product_price'>$" + resultsAsJSON[k]['retailer_price'][i]  + "</div>" +
 							  "</div>"+
 							  "<div class='button_container'>"+
-							  "<div onclick='window.open(&#39;" + resultsAsJSON[k]['buy_url'][i] + "&#39;,&#39;popupwindow&#39;);return false;' class='purchase-button add' target='_blank'>Purchase</div>"+
+							  "<div class='btn item-btns orange add' onclick='window.open(&#39;" + resultsAsJSON[k]['buy_url'][i] + "&#39;,&#39;popupwindow&#39;);return false;' target='_blank'><div class='divider'></div>Purchase</div>"+
 
-							  "<a href='' class='button star'>Bookmark</a>"+
-							  "<a href='' class='button share-product'>Share</a>"+
+							  "<a href='' class='btn item-btns white star'><div class='divider'></div>Bookmark</a>"+
+							  "<a href='' class='btn item-btns white share-product' height='10' width='10'><div class='divider'></div>Share</a>"+
 							  "<div class='share-buttons closed'>"+
 								"<a class='facebook'></a>"+
 								"<a class='twitter'></a>"+
@@ -229,11 +231,61 @@ $(document).ready(function() {
 			}
 
             var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
+            var tablet = navigator.userAgent.match(/iPad/i);
             if(mobile){
               $('iframe').css('height','200px');
 			  $('.looks-container').css('padding-bottom', '35px');
 			  
-            }
+            } else if(!mobile & !tablet){	
+			
+				/* -- Adding the settings dropdown to top right -- */
+				$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top"><div class="divider"></div><span class></span></a>');
+				
+				/* -- Dynamically substitute for user email -- */
+				var getuser = StackMob.getLoggedInUser();
+				if (StackMob.getLoggedInUser() == null) {
+					getuser = "Guest";
+				}
+				$('.btn span').html(getuser);
+				
+				$('.top-bar').after('<ul class="dropdown-list"></ul>');
+				$('.dropdown-list').append('<li class="drop-item">Settings</li>');
+				$('.dropdown-list').append('<li id="bookmark-tab" class="drop-item">Bookmarks</li>');
+				$('.dropdown-list').append('<li id="following-tab" class="drop-item">Following</li>');
+				$('.dropdown-list').append('<hr>');
+				$('.dropdown-list').append('<li class="drop-item">Sign Out</li>');
+				
+				/* This is the dropdown for Bookmarks -height is dynamic */
+				$('.dropdown-list').after('<ul class="bookmark-list"></ul>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item1</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item2</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item3</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item4</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item5</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item6</li>');
+				$('.bookmark-list').append('<li class="drop-item">...more...</li>');
+
+				
+				
+				/* This is the dropdown for Following -height is dynamic */
+				$('.dropdown-list').after('<ul class="following-list"></ul>');
+				$('.following-list').append('<li class="drop-item">Following Item1</li>');
+				$('.following-list').append('<li class="drop-item">Following Item2</li>');
+				$('.following-list').append('<li class="drop-item">Following Item3</li>');
+				$('.following-list').append('<li class="drop-item">Following Item4</li>');
+			}
+			
+			$('#bookmark-tab').live('click', function(e) {
+				$('.bookmark-list').slideToggle();
+			});
+			
+			$('#following-tab').live('click', function(e) {
+				$('.following-list').slideToggle();
+			});
+			
+			$('.btn.with-icon.white-top').live('click', function(e) {
+				$('.dropdown-list').slideToggle();
+			});
 
             $('.item').live(click, function(e){
               e.stopImmediatePropagation();
@@ -413,39 +465,19 @@ $(document).ready(function() {
   // });
 
 
-	// var artist_name = artist;
-	// var user = StackMob.getLoggedInUser();  
-	// var title = "";
-	// var Bookmark = StackMob.Model.extend({ schemaName: 'Bookmarks' });  
-	// var Bookmarks = StackMob.Collection.extend({ model: Bookmark }); 
-	// var mark = new Bookmarks();
-	// var a = new StackMob.Collection.Query();
-	// a.equals('video_url', video_url).equals('username', user);
-	// mark.query(a, {
-	// 	success: function(results) {
-	// 	  var resultsAsJSON = results.toJSON();
-	// 	  for(var i = 0; i < resultsAsJSON.length; i++) {
-	// 	    if (i >= 0) {
-	// 	      console.debug($(this + ".star").text());
-	// 	    } else {
-	// 	      console.debug($(this + ".star").text());
-	// 	    }
-	// 	   }
-	// 	}
-	// });
+	
 
+	
 
-	var item_title = "";
-	var item_buyURL = "";
 	$(".star").live("click",function(e){
 	  e.preventDefault(); 
-	  item_title = $(this).parent(".button_container").parent(".item").find(".product_container").find(".product_title").text().slice(0, -1);
-	  item_buyURL = $(this).parent(".button_container").find(".add").attr("onclick").replace("window.open('", "").replace("','popupwindow');return false;", "");
-	  console.debug(item_buyURL);
+	  var item_title = $(this).parent(".button_container").parent(".item").find(".product_container").find(".product_title").text().slice(0, -1);
+	  var item_buyURL = $(this).parent(".button_container").find(".add").attr("onclick").replace("window.open('", "").replace("','popupwindow');return false;", "");
+	  var item_image = $(this).parent(".button_container").parent(".item").find(".image_align img").attr('src');
 	  if($(this).hasClass('selected')) {
 	    $(this).removeClass('selected');
-		
-		$(this).html('Bookmark');
+		$(this).empty();
+		$(this).append("<div class='divider'></div>Bookmark");
 		$(this).removeAttr('style');
 		
 	    // mark.destroyAll(a, {
@@ -461,25 +493,35 @@ $(document).ready(function() {
 	  } else {
 	    $(this).addClass('selected');
 		
-		$(this).html('Bookmarked');
+		$(this).empty();
+		$(this).append("<div class='divider'></div>Bookmarked");
 		$(this).css('color', 'rgb(48, 149, 184)');
 		$(this).css('padding-left', '20px;');
 		$(this).css('padding-top', '15px;');
 		$(this).css('font-size', '0.88em');
 		
-		
-	    // alert('if has class not selected');
-	    // console.debug($(".product-title").text());
-	    // var myBookmark = new Bookmark({ username: user, artist_name: artist_name, video_url: video_url, product_title: product_image_title });
-	    // myBookmark.create({
-	    //   success: function(model) {
-	    //     console.debug(model);
-	    //   },
-	    //   error: function(model, response) {
-	    //     console.debug(model);
-	    //     console.debug(response);
-	    //   }
-	    // });
+		console.debug(item_title);
+	  	console.debug(item_buyURL);
+	  	console.debug(item_image);
+	  	console.debug(artist);
+	  	q.orderAsc('video_title').equals('artists', artist).equals('video_title', video_name.replace(/\%20/g, ' '));
+	  	items.query(q, {
+	    	success: function(results) {
+	      		var resultsAsJSON_music_title = results.toJSON();
+	      		var music_video_url = resultsAsJSON_music_title[0].music_video_id;
+	      		var Bookmark = StackMob.Model.extend({ schemaName: 'Bookmarks' }); 
+	      		var create_bookmark = new Bookmark({ username: StackMob.getLoggedInUser(), artist_name: artist, video_url: music_video_url, product_title: item_title, product_image: item_image, buy_url: item_buyURL });
+			    create_bookmark.create({
+			      success: function(model) {
+			        console.debug(model);
+			      },
+			      error: function(model, response) {
+			        console.debug(model);
+			        console.debug(response);
+			      }
+			    });
+	      	}
+	    });
 	  }
 
 	});
@@ -487,4 +529,51 @@ $(document).ready(function() {
 
 
 
+});
+$(window).bind("load", function() {
+   	var video = StackMob.Model.extend({ schemaName: 'Music_Video' });
+	var videos = StackMob.Collection.extend({ model: video }); 
+	var items = new videos();
+	var q = new StackMob.Collection.Query();
+	q.orderAsc('video_title').equals('artists', artist).equals('video_title', video_name.replace(/\%20/g, ' '));
+  	items.query(q, {
+  		async: false,
+    	success: function(results) {
+      		var resultsAsJSON_music_title = results.toJSON();
+      		var music_video_url = resultsAsJSON_music_title[0].music_video_id;
+      		var getBookmark = StackMob.Model.extend({ schemaName: 'Bookmarks' });  
+			var getBookmarks = StackMob.Collection.extend({ model: getBookmark }); 
+			var getitem = new getBookmarks();
+			var qr = new StackMob.Collection.Query();
+      		qr.equals('video_url', music_video_url).equals('username', StackMob.getLoggedInUser()).equals('artist_name', artist);
+			getitem.query(qr, {
+				success: function(results) {
+				  	var resultsAsJSON = results.toJSON();
+				  	$('.item-btns.add').each(function() {
+				  		var get_buyurl = $(this).attr("onclick").replace("window.open('", "").replace("','popupwindow');return false;", "");
+				  		var look = StackMob.Model.extend({ schemaName: 'Look' });
+						var looks = StackMob.Collection.extend({ model: look }); 
+						var item = new looks();
+						var a = new StackMob.Collection.Query();
+					    a.equals('video_url', music_video_url);
+				      	item.query(a, {
+				        	success: function(results) {
+				        		var resultsAsJSON = results.toJSON();
+				        		for(var e = 0; e < resultsAsJSON.length; e++) {
+				        			for(var r = 0; r < resultsAsJSON[e].buy_url.length; r++) {
+				        				if (resultsAsJSON[e].buy_url[r] === get_buyurl) {
+				        					//get data from bookmarks db and match it with website links
+				        					console.debug("website url" + get_buyurl);
+				        					console.debug("db url" + resultsAsJSON[e].buy_url[r]);
+				        					console.debug("there's a match");
+				        				}
+				        			}
+				        		}
+				        	}
+						});
+					});
+				}
+			});
+      	}
+    });
 });
