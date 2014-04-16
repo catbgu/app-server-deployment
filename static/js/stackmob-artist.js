@@ -3,6 +3,14 @@ StackMob.init({
   publicKey:        'da5f9b0d-676e-4d57-be03-e8436eb6313b',
   apiVersion:       1
 });
+$(document).ready(function() {
+  $("a.back-btn").on('click',function(){
+      window.location = "http://inspiredapp.tv/app/templates/music.html";    
+  });
+  $("a.name").on('click',function(){
+    window.location = "http://inspiredapp.tv/app/templates/music.html";    
+  });
+});
 //Creates Artist Music Videos Dynamicly
 var artist_name = window.location.pathname.split('/');
 var artist1 = artist_name[2].replace(/\-/g, ' ');

@@ -7,18 +7,18 @@ var artist_name = window.location.pathname.split('/');
 var artist1 = artist_name[2].replace(/\-/g, ' ');
 var artist = artist1.replace(/\b./g, function(m){ return m.toUpperCase(); });
 var video_name = artist_name[3].substr(0, artist_name[3].indexOf('.')).replace(/\%20/g, ' ');
-$(document).ready(function() {
+var url = document.URL;
 
+$(document).ready(function() {
+	$("a.name").on('click',function(){
+    	window.location = "http://inspiredapp.tv/app/templates/music.html";    
+  	});
   var look = StackMob.Model.extend({ schemaName: 'Look' });
   var looks = StackMob.Collection.extend({ model: look }); 
   var lookList = [];
   var k = 0;
   var item = new looks();
   var a = new StackMob.Collection.Query();
-  
-
-  
-
   var video = StackMob.Model.extend({ schemaName: 'Music_Video' });
   var videos = StackMob.Collection.extend({ model: video }); 
   var items = new videos();
@@ -34,36 +34,35 @@ $(document).ready(function() {
         success: function(results) {
         var resultsAsJSON = results.toJSON();
         $("iframe").attr('src', '//www.youtube-nocookie.com/embed/'+ resultsAsJSON[k]["video_url"]  +'?wmode=opaque&amp;modestbranding=1&amp;rel=0');
-		
         $(".video-poster").css('background','#000');
 
         for(var c = 0; c < resultsAsJSON.length; c++) {        
           for(var i = 0; i < resultsAsJSON[k]['product_title'].length; i++) {
+          	var price = resultsAsJSON[k]['retailer_price'][i].toString(); price = price.substr(0, price.length-2) + '.' + price.substr(price.length-2);
             lookList[k] +=  "<div class = 'item'>" +
-                              "<div class='image_align'><img id='?video_url="+ resultsAsJSON[k]["video_url"] + 
-                              "&artist_name="+ resultsAsJSON_music_title[0].artists + 
-                              "&product_image=" + resultsAsJSON[k]['product_image'][i] + 
-                              "&product_title=" + resultsAsJSON[k]['product_title'][i].replace(/\'/g, "&#8217") + 
-                              "&price=" + resultsAsJSON[k]['retailer_price'][i] + 
-                              // "&product_description=" +  encodeURIComponent(resultsAsJSON[k]['product_description'][i].replace(/\'/g, "&#8217").replace(/\*/g, "&#42").replace(/\%0A/g, "").replace(/\"/g, "&#8221;")) + 
-                              "&retailer_logo=" + encodeURIComponent(resultsAsJSON[k]['retailer_logo'][i].replace(/\'/g, "&#8217").replace(/\"/g, "&#8221;")) + 
-                              "&buy_url=" + resultsAsJSON[k]['buy_url'][i] + "' src = '" + resultsAsJSON[k]['product_image'][i] + "'/></div>" +
-							  "<div class='product_container'>"+
-                              "<div class='product_title'>" + resultsAsJSON[k]['product_title'][i] + "</div>" +
-                              "<div class='product_price'>$" + resultsAsJSON[k]['retailer_price'][i]  + "</div>" +
-							  "</div>"+
-							  "<div class='button_container'>"+
-							  "<div class='btn item-btns orange add' onclick='window.open(&#39;" + resultsAsJSON[k]['buy_url'][i] + "&#39;,&#39;popupwindow&#39;);return false;' target='_blank'><div class='divider'></div>Purchase</div>"+
+								"<div class='image_align'><img id='?video_url="+ resultsAsJSON[k]["video_url"] + 
+									"&artist_name="+ resultsAsJSON_music_title[0].artists + 
+									"&product_image=" + resultsAsJSON[k]['product_image'][i] + 
+									"&product_title=" + resultsAsJSON[k]['product_title'][i].replace(/\'/g, "&#8217") + 
+									"&price=" + resultsAsJSON[k]['retailer_price'][i] + 
+									"&retailer_logo=" + encodeURIComponent(resultsAsJSON[k]['retailer_logo'][i].replace(/\'/g, "&#8217").replace(/\"/g, "&#8221;")) + 
+									"&buy_url=" + resultsAsJSON[k]['buy_url'][i] + "' src = '" + resultsAsJSON[k]['product_image'][i] + "'/></div>" +
+									"<div class='product_container'>"+
+									"<div class='product_title'>" + resultsAsJSON[k]['product_title'][i] + "</div>" +
+									"<div class='product_price'>$" + price + "</div>" +
+								"</div>"+
+								"<div class='button_container'>"+
+									"<div class='btn item-btns orange add' onclick='window.open(&#39;" + resultsAsJSON[k]['buy_url'][i] + "&#39;,&#39;popupwindow&#39;);return false;' target='_blank'><div class='divider'></div>Purchase</div>"+
+									"<a href='javascript:void(0)' class='btn item-btns white star'><div class='divider'></div>Bookmark</a>"+
+									"<a href='javascript:void(0)' class='btn item-btns white share-product' height='10' width='10' data-reveal-id='share-box-touch' href='#'><div class='divider'></div>Share</a>"+
+									"<div class='share-buttons closed'>"+
+										"<a class='facebook' href='javascript:void(0)' onclick=\"window.open('https://www.facebook.com/sharer/sharer.php?u=http://tinyurl.com/inspiredapp')\"'></a>"+
+										"<a class='twitter' href='javascript:void(0)' onclick=\"window.open('https://twitter.com/intent/tweet?url=http://tinyurl.com/inspiredapp&text=%23ootd+worthy?+Inspired+by+@Inspired_App')\"'></a>"+
 
-							  "<a href='' class='btn item-btns white star'><div class='divider'></div>Bookmark</a>"+
-							  "<a href='' class='btn item-btns white share-product' height='10' width='10'><div class='divider'></div>Share</a>"+
-							  "<div class='share-buttons closed'>"+
-								"<a class='facebook'></a>"+
-								"<a class='twitter'></a>"+
-								"<a class='pinterest'></a>"+
-								"<a class='email-share'></a>"+
-							  "</div>"+	
-							  "</div>"+
+										"<a class='pinterest' href='javascript:void(0)' onclick=\"window.open('https://pinterest.com/pin/create/button/?url=" + resultsAsJSON[k]['buy_url'][i] + "&description=#ootd worthy? #fashion inspired by http://tinyurl.com/inspiredapp')\" data-pin-do='buttonPin'></a>"+
+										"<a class='email-share' href='javascript:void(0)' onclick=\"window.open('mailto:?subject=Must have!&amp;body=OMG looove! http://tinyurl.com/inspiredapp')\"'></a>"+
+									"</div>"+	
+								"</div>"+
                             "</div>";
             }
             $("div.looks-container").append(""+
@@ -87,7 +86,7 @@ $(document).ready(function() {
 				var click = 'click';
 			}
 			
-            //SLIDER ON MUSIC VIDEO PAGE
+        //SLIDER ON MUSIC VIDEO PAGE
             $('.iosSlider').iosSlider({
               desktopClickDrag: true,
               snapToChildren: true
@@ -158,6 +157,7 @@ $(document).ready(function() {
 					}		
 				}
 			}	
+
             function slideChange(args) {              
               args.settings.navNextSelector.show();
               args.settings.navPrevSelector.show();
@@ -229,7 +229,7 @@ $(document).ready(function() {
 					}		
 				}	
 			}
-
+			
             var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
             var tablet = navigator.userAgent.match(/iPad/i);
             if(mobile){
@@ -237,9 +237,82 @@ $(document).ready(function() {
 			  $('.looks-container').css('padding-bottom', '35px');
 			  
             } else if(!mobile & !tablet){	
-			
 				/* -- Adding the settings dropdown to top right -- */
-				$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top"><div class="divider"></div><span class></span></a>');
+				//$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
+				
+				/* -- Adding the 'other music videos' panel to the left -- */
+				//$('.top-bar').append('<div class="small-2 large-2 columns panel-container"><ul name="artist-videos" class="artist-videos-panel"><h5>Music Videos</h5><hr /></ul></div>');
+				
+				/* -- Need to dynamically insert other artist music videos: No more than 4 videos, b/c of more videos button -- */
+				$('.artist-videos-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
+					"<div>Hurricane (English version)</div>" +
+				"</a>"+
+				"</li>"
+				);
+				$('.artist-videos-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
+					"<div>Hurricane (English version)</div>" +
+				"</a>"+
+				"</li>"
+				);
+				
+				$('.artist-videos-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
+					"<div>Hurricane (English version)</div>" +
+				"</a>"+
+				"</li>"
+				);
+				
+				$('.artist-videos-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
+					"<div>Hurricane (English version)</div>" +
+				"</a>"+
+				"</li>"
+				);
+				
+				/* -- The last element in the list (dynamically insert current artist name); always the more artist videos button -- */
+				$('.artist-videos-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/artists/antonia/artist.html">More music videos...<a/></li>');
+				
+				/* -- Adding the 'similar artists' panel to the left -- */
+				$('.panel-container').append("<ul name='similar-aritsts' class='similar-artists-panel'><h5>Similar Artists</h5><hr /></ul>");
+				
+				/* -- Need to dynamically insert the artists pages and photos here: No more than 4 artists b/c "more artists" button is there.-- */
+				$('.similar-artists-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/lily-allen/artist.html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/lily-allen/small.png'>" +
+					"<div>Lily Allen</div>" +
+				"</a>"+
+				"</li>"
+				);
+				$('.similar-artists-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/kylie-minogue/artist.html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/kylie-minogue/small.png'>" +
+					"<div>Kylie Minogue</div>" +
+				"</a>"+
+				"</li>"
+				);
+				$('.similar-artists-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/kacey-musgraves/artist.html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/kacey-musgraves/small.png'>" +
+					"<div>Kacey Musgraves</div>" +
+				"</a>"+
+				"</li>"
+				);
+				$('.similar-artists-panel').append("<li class='drop-item'>"+
+				"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/jennifer-hudson/artist.html\"'>" +
+					"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/jennifer-hudson/small.png'>" +
+					"<div>Jennifer Hudson</div>" +
+				"</a>"+
+				"</li>"
+				);
+				
+				/* -- The last element in the list; always the more artists button -- */
+				$('.similar-artists-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/app/templates/music.html">More artists...<a/></li>');
 				
 				/* -- Dynamically substitute for user email -- */
 				var getuser = StackMob.getLoggedInUser();
@@ -248,7 +321,7 @@ $(document).ready(function() {
 				}
 				$('.btn span').html(getuser);
 				
-				$('.top-bar').after('<ul class="dropdown-list"></ul>');
+				$('.top-bar').after('<img src="/app/static/img/dropdown.png" class="drop-img"/><ul class="dropdown-list"></ul>');
 				$('.dropdown-list').append('<li class="drop-item">Settings</li>');
 				$('.dropdown-list').append('<li id="bookmark-tab" class="drop-item">Bookmarks</li>');
 				$('.dropdown-list').append('<li id="following-tab" class="drop-item">Following</li>');
@@ -263,9 +336,10 @@ $(document).ready(function() {
 				$('.bookmark-list').append('<li class="drop-item">Bookmark Item4</li>');
 				$('.bookmark-list').append('<li class="drop-item">Bookmark Item5</li>');
 				$('.bookmark-list').append('<li class="drop-item">Bookmark Item6</li>');
-				$('.bookmark-list').append('<li class="drop-item">...more...</li>');
-
-				
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item7</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item8</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item9</li>');
+				$('.bookmark-list').append('<li class="drop-item">Bookmark Item10</li>');
 				
 				/* This is the dropdown for Following -height is dynamic */
 				$('.dropdown-list').after('<ul class="following-list"></ul>');
@@ -276,15 +350,28 @@ $(document).ready(function() {
 			}
 			
 			$('#bookmark-tab').live('click', function(e) {
-				$('.bookmark-list').slideToggle();
+				$('.bookmark-list').slideToggle(200);
+				
+				if($('.following-list').css('display') == 'block') {
+					$('.following-list').slideUp(200);
+				}
 			});
 			
 			$('#following-tab').live('click', function(e) {
-				$('.following-list').slideToggle();
+				$('.following-list').slideToggle(200);
+				
+				if($('.bookmark-list').css('display') == 'block') {
+					$('.bookmark-list').slideUp(200);
+				}
 			});
 			
 			$('.btn.with-icon.white-top').live('click', function(e) {
-				$('.dropdown-list').slideToggle();
+				$('.dropdown-list').slideToggle(300);
+				
+				if(($('.bookmark-list').css('display') == 'block') || ($('.following-list').css('display') == 'block')) {
+					$('.bookmark-list').slideUp(200);
+					$('.following-list').slideUp(200);
+				}
 			});
 
             $('.item').live(click, function(e){
@@ -294,80 +381,67 @@ $(document).ready(function() {
 			
 			var mobile = navigator.userAgent.match(/iPhone|iPad|Android|Windows Phone|BlackBerry/i);
             if(mobile){
-
 				var WP = navigator.userAgent.match(/Windows Phone/i);
 				//Setting this to "live" will not work on Windows Phone.
 				if(WP) {
 					$('.item').on("click", function(e){
+						$('img, .product_container').css('opacity', '1');
+						$('.button_container').css('display', 'none');
+
 						if($(this).children().last().css('display') == 'none') {
-						
-							$(this).css('background-color', '#8f8f8f');
-							$(this).find('img').css('opacity', '0.3');
-							
+							// $(this).css('background-color', '#8f8f8f');
+							$(this).find('img, .product_container').css('opacity', '0.1');
 							$(this).children().last().css('display', 'block');	
-						
 						} else {
-						
 							$(this).css('background-color', '#fff');
 							$(this).find('img').css('opacity', '1');
-							
 							$(this).children().last().css('display', 'none');
 							
 							var target = $(e.target);
-							if ($(e.target).is('.button') || target.is('.facebook') || target.is('.twitter') || target.is('.pinterest') || target.is('.email-share')) {
-							
+							if (target.is('.button') || target.is('.facebook') || target.is('.twitter') || target.is('.pinterest') || target.is('.email-share')) {
 								$(this).children().last().css('display', 'block');
-								$(this).css('background-color', '#8f8f8f');
-								$(this).find('img').css('opacity', '0.3');
+								// $(this).css('background-color', '#8f8f8f');
+								$(this).find('img, .product_container').css('opacity', '0.1');
 								e.stopImmediatePropagation();
 								e.preventDefault();
 								return;
-								
 							}
 						}
 					});	
 					$('.star').on("click", function(e){
 						if($(this).attr('style')) {
-													
 							$(this).html('Bookmark');
 							$(this).removeAttr('style');
-							
 						} else {
-							
 							$(this).html('Bookmarked');
 							$(this).css('color', 'rgb(48, 149, 184)');
 							$(this).css('padding-left', '20px;');
 							$(this).css('padding-top', '15px;');
 							$(this).css('font-size', '0.88em');
-							
 						  }
 					});
 				} else {
 					$('.item').live("click", function(e){
+						$('img, .product_container').css('opacity', '1');
+						$('.button_container').css('display', 'none');
+
 						if($(this).children().last().css('display') == 'none') {
-						
-							$(this).css('background-color', '#8f8f8f');
-							$(this).find('img').css('opacity', '0.3');
-							
+							// $(this).css('background-color', '#8f8f8f');
+							$(this).find('img, .product_container').css('opacity', '0.1');
 							$(this).children().last().css('display', 'block');	
-						
 						} else {
-						
 							$(this).css('background-color', '#fff');
 							$(this).find('img').css('opacity', '1');
-							
 							$(this).children().last().css('display', 'none');
 							
 							var target = $(e.target);
 							if (target.is('.button') || target.is('.facebook') || target.is('.twitter') || target.is('.pinterest') || target.is('.email-share')) {
-							
 								$(this).children().last().css('display', 'block');
-								$(this).css('background-color', '#8f8f8f');
-								$(this).find('img').css('opacity', '0.3');
+								// $(this).css('background-color', '#8f8f8f');
+								$(this).find('img, .product_container').css('opacity', '0.1');
 								e.stopImmediatePropagation();
 								e.preventDefault();
 								return;
-								
 							}
 						}
 					});	
@@ -380,94 +454,23 @@ $(document).ready(function() {
 					  $(this).children().last().fadeOut();
 					  $('.share-product').next().removeClass('open').addClass('closed');
 				});
+				
+				/* Share button reveal modal slide down on touch */
+				$('.share-product').on("click", function(e) {
+					e.stopImmediatePropagation();
+					e.preventDefault();
+					
+					if($(this).next().hasClass('closed')) {
+						$(this).next().removeClass('closed').addClass('open');
+					} else {
+						$(this).next().removeClass('open').addClass('closed');
+					}
+				});
 			}
-			
-			// setting it to "live" will not work in mobile! 
-			$('.share-product').on("click", function(e) {
-				e.stopImmediatePropagation();
-				e.preventDefault();
-				
-				
-				if($(this).next().hasClass('closed')) {
-				
-					
-					$(this).next().removeClass('closed').addClass('open');
-					
-				} else {
-				
-					$(this).next().removeClass('open').addClass('closed');
-					
-				}
-				
-			});
 		}
       });   
     }
   });
-
-
-  // var look = StackMob.Model.extend({ schemaName: 'Look' });
-  // var looks = StackMob.Collection.extend({ model: look }); 
-  // var lookList = [];
-  // var k = 0;
-  // var item = new looks();
-  // var a = new StackMob.Collection.Query();
-
-
-  // var artist_name = window.location.pathname.split('/');
-  // var artist1 = artist_name[2].replace(/\-/g, ' ');
-  // var artist = artist1.replace(/\b./g, function(m){ return m.toUpperCase(); });
-
-  // var video_name = artist_name[3].substr(0, artist_name[3].indexOf('.')).replace(/\%20/g, ' ');
-
-  // var video = StackMob.Model.extend({ schemaName: 'Music_Video' });
-  // var videos = StackMob.Collection.extend({ model: video }); 
-  // var items = new videos();
-  // var q = new StackMob.Collection.Query();
-  // q.orderAsc('video_title').equals('artists', artist).equals('video_title', video_name.replace(/\%20/g, ' '));
-  // items.query(q, {
-  //   success: function(results) {
-  //     var resultsAsJSON_music_title = results.toJSON();
-  //     var music_video_url = resultsAsJSON_music_title[0].music_video_id;
-  //     var send_artist_name = resultsAsJSON_music_title[0].artists;
-  //     a.equals('video_url', music_video_url);
-  //     item.query(a, {
-  //       success: function(results) {
-  //       var resultsAsJSON = results.toJSON();
-
-
-
-  //       for(var c = 0; c < resultsAsJSON.length; c++) {        
-  //         for(var i = 0; i < resultsAsJSON[k]['product_title'].length; i++) {
-  //           lookList[k] +=  "<div class = 'item' onclick=''>" +
-  //                             "<div class='image_align'><img id='?video_url="+ resultsAsJSON[k]["video_url"] + 
-  //                             "&artist_name="+ resultsAsJSON_music_title[0].artists + 
-  //                             "&product_image=" + resultsAsJSON[k]['product_image'][i] + 
-  //                             "&product_title=" + resultsAsJSON[k]['product_title'][i].replace(/\'/g, "&#8217") + 
-  //                             "&price=" + resultsAsJSON[k]['retailer_price'][i] + 
-  //                             // "&product_description=" +  encodeURIComponent(resultsAsJSON[k]['product_description'][i].replace(/\'/g, "&#8217").replace(/\*/g, "&#42").replace(/\%0A/g, "").replace(/\"/g, "&#8221;")) + 
-  //                             "&retailer_logo=" + encodeURIComponent(resultsAsJSON[k]['retailer_logo'][i].replace(/\'/g, "&#8217").replace(/\"/g, "&#8221;")) + 
-  //                             "&buy_url=" + resultsAsJSON[k]['buy_url'][i] + "' src = '" + resultsAsJSON[k]['product_image'][i] + "'/></div>" +
-		// 					  "<div class='product_container'>"+
-  //                             "<div class='product_title'>" + resultsAsJSON[k]['product_title'][i] + "</div>" +
-  //                             "<div class='product_price'>$" + resultsAsJSON[k]['retailer_price'][i]  + "</div>" +
-		// 					  "</div>"+
-		// 					  "<div class='button_container'>"+
-		// 					  "<a href='" + resultsAsJSON[k]['buy_url'][i] + "' class='button add' target='_blank'>Purchase</a>"+
-		// 					  "<a href='' class='button star'>Bookmark</a>"+
-		// 					  "<a href='' class='button share-product'>Share</a>"+
-		// 					  "</div>"+
-  //                           "</div>";
-  //           }
-  //       }
-  //     });   
-  //   }
-  // });
-
-
-	
-
-	
 
 	$(".star").live("click",function(e){
 	  e.preventDefault(); 
@@ -500,10 +503,6 @@ $(document).ready(function() {
 		$(this).css('padding-top', '15px;');
 		$(this).css('font-size', '0.88em');
 		
-		console.debug(item_title);
-	  	console.debug(item_buyURL);
-	  	console.debug(item_image);
-	  	console.debug(artist);
 	  	q.orderAsc('video_title').equals('artists', artist).equals('video_title', video_name.replace(/\%20/g, ' '));
 	  	items.query(q, {
 	    	success: function(results) {
@@ -513,22 +512,17 @@ $(document).ready(function() {
 	      		var create_bookmark = new Bookmark({ username: StackMob.getLoggedInUser(), artist_name: artist, video_url: music_video_url, product_title: item_title, product_image: item_image, buy_url: item_buyURL });
 			    create_bookmark.create({
 			      success: function(model) {
-			        console.debug(model);
+			        // console.debug(model);
 			      },
 			      error: function(model, response) {
-			        console.debug(model);
-			        console.debug(response);
+			        // console.debug(model);
+			        // console.debug(response);
 			      }
 			    });
 	      	}
 	    });
 	  }
-
 	});
-
-
-
-
 });
 $(window).bind("load", function() {
    	var video = StackMob.Model.extend({ schemaName: 'Music_Video' });
@@ -563,9 +557,9 @@ $(window).bind("load", function() {
 				        			for(var r = 0; r < resultsAsJSON[e].buy_url.length; r++) {
 				        				if (resultsAsJSON[e].buy_url[r] === get_buyurl) {
 				        					//get data from bookmarks db and match it with website links
-				        					console.debug("website url" + get_buyurl);
-				        					console.debug("db url" + resultsAsJSON[e].buy_url[r]);
-				        					console.debug("there's a match");
+				        					// console.debug("website url" + get_buyurl);
+				        					// console.debug("db url" + resultsAsJSON[e].buy_url[r]);
+				        					// console.debug("there's a match");
 				        				}
 				        			}
 				        		}

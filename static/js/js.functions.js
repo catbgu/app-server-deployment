@@ -388,8 +388,8 @@ $(document).ready(function(){
 		mouseenter: function (e) {
 			$(this).addClass("hover");
 			$(this).find( "img:nth-child(2)" ).addClass("img-border"); 
-			$(this).find( "img:nth-child(2)" ).css("opacity", "0.5"); 
-			$(this).find( "h5" ).css("color", "#fff");
+			$(this).find( "img:nth-child(2)" ).css("opacity", "0.3"); 
+			$(this).find( "h5" ).css("color", "#C4C2C2");
 		},
 		mouseleave: function (e) {
 			$(this).removeClass("hover");
