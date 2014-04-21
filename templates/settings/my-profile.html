@@ -5,7 +5,15 @@
         <div class="profile-email-label small-5 columns">Email Address</div>
         <div class="profile-email-field small-7 columns">email@email.com</div>
       </div>
-
+	  
+	  <script defer type="text/javascript" >
+		var getuser = StackMob.getLoggedInUser();
+			if (StackMob.getLoggedInUser() == null) {
+				getuser = "Guest";
+			}
+			$('.profile-email-field').html(getuser);
+	  </script>	
+	  
       <div class="row-2 profile-group">
         <div class="profile-pass-label small-5 columns">Password</div>
         <a class="profile-pass-field small-7 columns">Change My Password</a>

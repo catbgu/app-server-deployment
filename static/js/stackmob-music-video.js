@@ -237,13 +237,15 @@ $(document).ready(function() {
 			  $('.looks-container').css('padding-bottom', '35px');
 			  
 			/* Top-Bar specific components below: like Bookmarks, following, Settings dropdown, Panels etc... */ 
-			
             } else if(!mobile & !tablet){ 	
+				/* First, disabling the footer for PC */
+				$('.footer').css('display', 'none');
+					
 				/* -- Adding the settings dropdown to top right -- */
-			//	$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
+				$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
 				
 				/* -- Adding the 'Other Videos from <dynamic artist name here>/Music Videos' panel to the left -- */
-			//	$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-videos-panel"><h5>Other Videos From Antonia</h5><hr /></ul></div>');
+				$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-videos-panel"><h5>Other Videos From Antonia</h5></ul></div>');
 				
 				/* -- Need to dynamically insert other artist music videos: No more than 4 videos, b/c of more videos button -- */
 				$('.artist-videos-panel').append("<li class='drop-item'>"+
@@ -278,10 +280,10 @@ $(document).ready(function() {
 				);
 				
 				/* -- The last element in the list (dynamically insert current artist name); always the more artist videos button -- */
-				$('.artist-videos-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/artists/antonia/artist.html">More music videos...<a/></li>');
+				$('.artist-videos-panel').children().last().after('<li class="drop-item"><a href="http://inspiredapp.tv/artists/antonia/artist.html">Even more...<a/></li>');
 				
 				/* -- Adding the 'similar artists/Who's Trending' panel to the left -- */
-				$('.panel-container').append("<ul name='similar-artists' class='similar-artists-panel'><h5>Who's Trending</h5><hr /></ul>");
+				$('.panel-container').append("<ul name='similar-artists' class='similar-artists-panel'><h5>Who's Trending</h5></ul>");
 				
 				/* -- Need to dynamically insert the artists pages and photos here: No more than 4 artists b/c "more artists" button is there.-- */
 				$('.similar-artists-panel').append("<li class='drop-item'>"+
@@ -314,7 +316,7 @@ $(document).ready(function() {
 				);
 				
 				/* -- The last element in the list; always the more artists button -- */
-				$('.similar-artists-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/app/templates/music.html">More artists...<a/></li>');
+				$('.similar-artists-panel').children().last().after('<li class="drop-item"><a href="http://inspiredapp.tv/app/templates/music.html">Even more...<a/></li>');
 				
 				/* -- Dynamically substitute for user email -- */
 				var getuser = StackMob.getLoggedInUser();
@@ -323,7 +325,7 @@ $(document).ready(function() {
 				}
 				$('.btn span').html(getuser);
 				
-				$('.top-bar').after('<img src="/app/static/img/dropdown.png" class="drop-img"/><ul class="dropdown-list"></ul>');
+				$('.top-bar').after('<ul class="dropdown-list"></ul>');
 				$('.dropdown-list').append('<li id="settings-tab" class="drop-item"">Settings</li>');
 				$('.dropdown-list').append('<li id="bookmark-tab" class="drop-item">Bookmarks</li>');
 				$('.dropdown-list').append('<li id="following-tab" class="drop-item">Following</li>');
@@ -365,7 +367,7 @@ $(document).ready(function() {
 				/* Moving the panel-container (containing Music Videos, and Similar Artists) over to the left of YouTube video */
 					var halfPanelWidth = $('.panel-container').width()/2;
 					
-					var halfWidth = $('.page-container').width()/2 + halfPanelWidth + 10;
+					var halfWidth = $('.page-container').width()/2 + halfPanelWidth + 8;
 					
 					var currMarg = parseInt($('.panel-container').css('margin-right'));
 					
@@ -459,7 +461,7 @@ $(document).ready(function() {
 				  dataType:'html',
 				  success:function(data) {
 					$(".ajax-container").html(data);
-				  }
+				  }  
 			   });
 			   $('.settings-title').text('My Profile');
 			   $('.settings-footer, .settings-menu-list, .settings-back').hide();

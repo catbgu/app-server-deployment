@@ -16,11 +16,12 @@ $(document).ready(function() {
     var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
 	var tablet = navigator.userAgent.match(/iPad/i);
     if(!mobile && !tablet){
+		
 		/* -- Adding the settings dropdown to top right -- */
-	//	$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
+		$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
 
 		/* -- Adding the 'Music Videos/New Releases' panel to the left -- */
-	//	$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-page artist-videos-panel"><h5>New Releases</h5><hr /></ul></div>');
+		$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-page artist-videos-panel"><h5>New Releases</h5></ul></div>');
 		
 		/* -- Need to dynamically insert other artist music videos: No more than 4 videos, b/c of more videos button -- */
 		$('.artist-videos-panel').append("<li class='drop-item'>"+
@@ -55,10 +56,10 @@ $(document).ready(function() {
 		);
 		
 		/* -- The last element in the list (dynamically insert current artist name); always the more artist videos button -- */
-		$('.artist-videos-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/artists/antonia/artist.html">More music videos...<a/></li>');
+		$('.artist-videos-panel').children().last().after('<li class="drop-item"><a href="http://inspiredapp.tv/artists/antonia/artist.html">More music videos...<a/></li>');
 		
 		/* -- Adding the 'similar artists/Who's Trending' panel to the left -- */
-		$('.panel-container').append("<ul name='similar-aritsts' class='artist-page similar-artists-panel'><h5>Who's Trending</h5><hr /></ul>");
+		$('.panel-container').append("<ul name='similar-aritsts' class='artist-page similar-artists-panel'><h5>Who's Trending</h5></ul>");
 		
 		/* -- Need to dynamically insert the artists pages and photos here: No more than 4 artists b/c "more artists" button is there.-- */
 		$('.similar-artists-panel').append("<li class='drop-item'>"+
@@ -91,7 +92,7 @@ $(document).ready(function() {
 		);
 		
 		/* -- The last element in the list; always the more artists button -- */
-		$('.similar-artists-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/app/templates/music.html">More artists...<a/></li>');
+		$('.similar-artists-panel').children().last().after('<li class="drop-item"><a href="http://inspiredapp.tv/app/templates/music.html">More artists...<a/></li>');
 		
 		/* -- Dynamically substitute for user email -- */
 		var getuser = StackMob.getLoggedInUser();
@@ -100,7 +101,7 @@ $(document).ready(function() {
 		}
 		$('.btn span').html(getuser);
 		
-		$('.top-bar').after('<img src="/app/static/img/dropdown.png" class="drop-img"/><ul class="dropdown-list"></ul>');
+		$('.top-bar').after('<ul class="dropdown-list"></ul>');
 		$('.dropdown-list').append('<li id="settings-tab" class="drop-item">Settings</li>');
 		$('.dropdown-list').append('<li id="bookmark-tab" class="drop-item">Bookmarks</li>');
 		$('.dropdown-list').append('<li id="following-tab" class="drop-item">Following</li>');
@@ -371,6 +372,12 @@ items.query(q, {
       //Artist.html page
       $(".artist-video-btn").removeClass("four columns artist-video-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='shop-icon' src='http://inspiredapp.tv/img/icons/shop-icon-small.png' style='width: 55px; height: 55px;' />");
       $(".video-title").removeClass("video-title").addClass("artist-name"); 
+	  
+	  /* Ddisabling the footer for PC */
+		$('.footer').css('display', 'none');
+		if(!tablet) {
+			$('.footer').css('display', 'none');
+		}
     }
   }
 });

@@ -29,7 +29,7 @@ $(document).ready(function(){
 	$(document).foundation(); 
 	//Define Click Event for Mobile
 	if( 'ontouchstart' in window ){ 
-		var click = 'singleTap'; 
+		var click = 'touchstart'; 
 	}else{ 
 		var click = 'click';
 	}	

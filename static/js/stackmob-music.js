@@ -21,12 +21,18 @@ items.query(q, {
 		    "</a>");
     }
     var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
+	var tablet = navigator.userAgent.match(/iPad/i);
 	if(!mobile){
 		//Music.html page
 		$(".artist-btn").removeClass("four columns artist-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='music-icon' src='http://inspiredapp.tv/img/icons/music-icon-small.png' />");
 		$(".artist-name").wrap("<div class='video-info'></div>");
 		$(".artist-name").wrapInner("<h5></h5>");
-
+		
+		/* Ddisabling the footer for PC */
+		$('.footer').css('display', 'none');
+		if(!tablet) {
+			$('.footer').css('display', 'none');
+		}
 	}
   }
 });
@@ -77,8 +83,9 @@ $(document).ready(function(){
     var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
 	var tablet = navigator.userAgent.match(/iPad/i);
     if(!mobile && !tablet){
+	
 		/* -- Adding the settings dropdown to top right -- */
-	//	$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
+		$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
 
 		/* -- Dynamically substitute for user email -- */
 		var getuser = StackMob.getLoggedInUser();
@@ -87,7 +94,7 @@ $(document).ready(function(){
 		}
 		$('.btn span').html(getuser);
 		
-		$('.top-bar').after('<img src="/app/static/img/dropdown.png" class="drop-img"/><ul class="dropdown-list"></ul>');
+		$('.top-bar').after('<ul class="dropdown-list"></ul>');
 		$('.dropdown-list').append('<li id="settings-tab" class="drop-item">Settings</li>');
 		$('.dropdown-list').append('<li id="bookmark-tab" class="drop-item">Bookmarks</li>');
 		$('.dropdown-list').append('<li id="following-tab" class="drop-item">Following</li>');
