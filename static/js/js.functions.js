@@ -46,7 +46,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		var user = new StackMob.User();  //no username necessary, since only 1 user is logged in on the device at a time
 		user.logout();
-		document.location.href = 'landing.html';
+		document.location.href = 'http://inspiredapp.tv/app/templates/landing.html';
 	});
 /*FOOTER BUTTONS*/
   //Settings MENU
@@ -56,7 +56,7 @@ $(document).ready(function(){
 		e.preventDefault();	
 		if( !$('.content').hasClass('inactive') ){				
 			// Slide and scale content		
-			$('.footer').hide();
+			//$('.footer').hide();
 			$('.content, .settings-menu').addClass('inactive');
 			setTimeout(function(){ $('.content').addClass('flag'); }, 100);
 			
@@ -111,7 +111,7 @@ $(document).ready(function(){
 	});	
 	$('.my-profile').on(click,function(){
 	   $.ajax({
-	      url:"../templates/settings/my-profile.html",
+	      url:"http://inspiredapp.tv/app/templates/settings/my-profile.html",
 	      dataType:'html',
 	      success:function(data) {
 	        $(".ajax-container").html(data);
@@ -123,7 +123,7 @@ $(document).ready(function(){
 	});	
 	$('.email-preferences').on(click,function(){
 	   $.ajax({
-	      url:"../templates/settings/email-preferences.html",
+	      url:"http://inspiredapp.tv/app/templates/settings/email-preferences.html",
 	      dataType:'html',
 	      success:function(data) {
 	        $(".ajax-container").html(data);
@@ -135,7 +135,7 @@ $(document).ready(function(){
 	});		
 	$('.invite-friends').on(click,function(){
 	   $.ajax({
-	      url:"../templates/settings/invite-friends.html",
+	      url:"http://inspiredapp.tv/app/templates/settings/invite-friends.html",
 	      dataType:'html',
 	      success:function(data) {
 	        $(".ajax-container").html(data);
@@ -147,7 +147,7 @@ $(document).ready(function(){
 	});
 	$('.send-feedback').on(click,function(){
 	   $.ajax({
-	      url:"../templates/settings/send-feedback.html",
+	      url:"http://inspiredapp.tv/app/templates/settings/send-feedback.html",
 	      dataType:'html',
 	      success:function(data) {
 	        $(".ajax-container").html(data);
@@ -159,7 +159,7 @@ $(document).ready(function(){
 	});	
 	$('.help').on(click,function(){
 	   $.ajax({
-	      url:"../templates/settings/help.html",
+	      url:"http://inspiredapp.tv/app/templates/settings/help.html",
 	      dataType:'html',
 	      success:function(data) {
 	        $(".ajax-container").html(data);
@@ -171,7 +171,7 @@ $(document).ready(function(){
 	});	
 	$('.legal').on(click,function(){
 	   $.ajax({
-	      url:"../templates/settings/legal.html",
+	      url:"http://inspiredapp.tv/app/templates/settings/legal.html",
 	      dataType:'html',
 	      success:function(data) {
 	        $(".ajax-container").html(data);
@@ -182,6 +182,8 @@ $(document).ready(function(){
 	   $('.settings-back-back').show();
 	});
   //END Settings MENU
+  
+  
   //Bookmark & Following buttons
 	var Follow_page = StackMob.Model.extend({ schemaName: 'Follows' });
   	var Follows_page = StackMob.Collection.extend({ model: Follow_page }); 

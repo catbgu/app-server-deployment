@@ -240,10 +240,10 @@ $(document).ready(function() {
 			
             } else if(!mobile & !tablet){ 	
 				/* -- Adding the settings dropdown to top right -- */
-			//	$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
+				$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
 				
-				/* -- Adding the 'Other Videos from <dynamic artist name here>/Music Videos' panel to the left -- */
-			//	$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-videos-panel"><h5>Other Videos From Antonia</h5><hr /></ul></div>');
+				/* -- Adding the 'Music Videos' panel to the left -- */
+				$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-videos-panel"><h5>Music Videos</h5><hr /></ul></div>');
 				
 				/* -- Need to dynamically insert other artist music videos: No more than 4 videos, b/c of more videos button -- */
 				$('.artist-videos-panel').append("<li class='drop-item'>"+
@@ -280,8 +280,8 @@ $(document).ready(function() {
 				/* -- The last element in the list (dynamically insert current artist name); always the more artist videos button -- */
 				$('.artist-videos-panel').children().last().after('<li class="drop-item" style="padding-top:20px;"><a href="http://inspiredapp.tv/artists/antonia/artist.html">More music videos...<a/></li>');
 				
-				/* -- Adding the 'similar artists/Who's Trending' panel to the left -- */
-				$('.panel-container').append("<ul name='similar-artists' class='similar-artists-panel'><h5>Who's Trending</h5><hr /></ul>");
+				/* -- Adding the 'similar artists' panel to the left -- */
+				$('.panel-container').append("<ul name='similar-aritsts' class='similar-artists-panel'><h5>Similar Artists</h5><hr /></ul>");
 				
 				/* -- Need to dynamically insert the artists pages and photos here: No more than 4 artists b/c "more artists" button is there.-- */
 				$('.similar-artists-panel').append("<li class='drop-item'>"+
@@ -328,7 +328,7 @@ $(document).ready(function() {
 				$('.dropdown-list').append('<li id="bookmark-tab" class="drop-item">Bookmarks</li>');
 				$('.dropdown-list').append('<li id="following-tab" class="drop-item">Following</li>');
 				$('.dropdown-list').append('<hr>');
-				$('.dropdown-list').append('<li id="logout-tab" class="drop-item">Log Out</li>');
+				$('.dropdown-list').append('<li class="drop-item">Sign Out</li>');
 				
 				/* This is the dropdown for Bookmarks -height is dynamic */
 				$('.dropdown-list').after('<ul class="bookmark-list"></ul>');
@@ -455,7 +455,7 @@ $(document).ready(function() {
 			});	
 			$('.my-profile').on(click,function(){
 			   $.ajax({
-				  url:"http://inspiredapp.tv/app/templates/settings/my-profile.html",
+				  url:"http://inspiredapp.tv/templates/app/templates/settings/my-profile.html",
 				  dataType:'html',
 				  success:function(data) {
 					$(".ajax-container").html(data);
@@ -526,15 +526,7 @@ $(document).ready(function() {
 			   $('.settings-back-back').show();
 			});
 		  //END Desktop Settings Menu
-			
-			  
-			$('#logout-tab').on('click', function(e){
-				e.stopImmediatePropagation();
-				e.preventDefault();
-				var user = new StackMob.User();  //no username necessary, since only 1 user is logged in on the device at a time
-				user.logout();
-				document.location.href = 'http://inspiredapp.tv/app/templates/landing.html';
-			});
+		  
 		  
 			$('.btn.with-icon.white-top').live('click', function(e) {
 				$('.dropdown-list').slideToggle(300);
