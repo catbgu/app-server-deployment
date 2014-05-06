@@ -6,14 +6,9 @@ StackMob.init({
 	publicKey:        'da5f9b0d-676e-4d57-be03-e8436eb6313b',
 	apiVersion:       1
 });
-
-//The lightbox for the product page
-/*function lightboxExit() {
-	$('#lightbox').fadeOut(300, function() { $(this).remove(); });	
-	$('#lightbox ul li img').removeClass('active');
-}*/
+  
 $(document).ready(function(){
-	$("#footer-container").css('top', $(document).height() + "px");
+	//$("#footer-container").css('top', $(document).height() + "px");
 
 	// Check if a new cache is available on page load. Swap it in and reload the page to get the new hotness.
 	window.addEventListener('load', function(e) {
@@ -38,7 +33,7 @@ $(document).ready(function(){
 
 	window.onload = function(){
 	  $(".spinner-wrap").fadeOut(50);
-	  $(".footer").fadeIn(100);
+	  //$(".footer").fadeIn(100);
 	};  	
 
 	$('.settings-logout').on(click, function(e){
@@ -48,6 +43,9 @@ $(document).ready(function(){
 		user.logout();
 		document.location.href = 'http://inspiredapp.tv/app/templates/landing.html';
 	});
+	
+var touchDevice = navigator.userAgent.match(/iPhone|iPad|Android|Windows Phone|BlackBerry/i);
+if(touchDevice) {	
 /*FOOTER BUTTONS*/
   //Settings MENU
 	/*	Reveal Menu */
@@ -56,7 +54,7 @@ $(document).ready(function(){
 		e.preventDefault();	
 		if( !$('.content').hasClass('inactive') ){				
 			// Slide and scale content		
-			//$('.footer').hide();
+			$('.footer').hide();
 			$('.content, .settings-menu').addClass('inactive');
 			setTimeout(function(){ $('.content').addClass('flag'); }, 100);
 			
@@ -75,7 +73,7 @@ $(document).ready(function(){
 			});
 		}
 	});
-
+	
 	/*	Close Menu */
 	function closeMenu() {		
 		// Slide and scale content
@@ -182,7 +180,7 @@ $(document).ready(function(){
 	   $('.settings-back-back').show();
 	});
   //END Settings MENU
-  
+ } 
   
   //Bookmark & Following buttons
 	var Follow_page = StackMob.Model.extend({ schemaName: 'Follows' });
@@ -197,7 +195,9 @@ $(document).ready(function(){
   	q.orderAsc('artist_name').equals('username', StackMob.getLoggedInUser());
   	
     $('a.footer-btn').on(click, function(e){
-        e.preventDefault();
+		console.log('clicked on footer button');
+		
+        //e.preventDefault();
         var position = $('#footer-container').position();
         if ($(this).hasClass('footer-bookmarks')){
         	var divActive = 'bookmarks';
@@ -215,26 +215,26 @@ $(document).ready(function(){
 				      $("#footer-container").html('');
 			 	     	for(var i = 0; i < resultsAsJSON.length; i++) {
 							$("#footer-container").append(""+
-							"<a href='http://eraytonyali.com/invidio/templates/product.php?video_url=" + resultsAsJSON[i]['video_url'] + "&artist_name=" + resultsAsJSON[i]['artist_name'] + 
-								"&product_image=" + resultsAsJSON[i]['product_image'] + "&product_title=" + resultsAsJSON[i]['product_title'] + "' class='look-item'>"+
+							"<a href='" + resultsAsJSON[i]['buy_url'] + "' target='_blank' class='look-item'>"+
 								"<img class='look-item-img' src='" + resultsAsJSON[i]['product_image'] + "' />"+
 								"<div class='look-item-info'>"+
 									"<div class='look-item-title'>" + resultsAsJSON[i]['product_title'] + "</div>"+
 								"</div>"+
 							"</a> ");
+							
 						}
 			  	  	}
 			  	});
-        	} else {
+        	} else {   
         		fols_page.query(q, {
 				   	 success: function(results) {
 				    	var resultsAsJSON = results.toJSON();
 				    	//FOLLOWING
 				    	$("#footer-container").html('');
 				   	   	for(var i = 0; i < resultsAsJSON.length; i++) {
-				   	    	$("#footer-container").append("<a href='http://eraytonyali.com/invidio/templates/artists/" +
+				   	    	$("#footer-container").append("<a href='http://inspiredapp.tv/artists/" +
 				   	    	 resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + 
-				   	    	 "/artist.html' class='four columns artist-btn'><img class='artist-img' src='http://eraytonyali.com/invidio/static/img/music/artists/"+ 
+				   	    	 "/artist.html' class='four columns artist-btn'><img class='artist-img' src='http://inspiredapp.tv/img/music/artists/"+ 
 				   	    	 resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() +"/"+ resultsAsJSON[i]['cover_image'] +
 				   	    	 "' /><div class='artist-name'>"+ resultsAsJSON[i]['artist_name'] +"</div></a> ");
 				   	    }
@@ -244,38 +244,35 @@ $(document).ready(function(){
 	
 			$(this).addClass('selected');
 			$('.footer-'+divInactive).removeClass('selected');
-        }
-        else{
+        }else{
 	        if(position.top == 1200){
-				$("#footer-container").css('top', $(window).height() + "px");
-				position.top = $(window).height();
 	        	$(this).addClass('selected');
 	        	$(".main-container").css('height',screenHeight);
-	        	$("#footer-container").css('height',$(window).height() + "px");
-				if ($('.footer-following').hasClass('selected')) {
+	        	$("#footer-container").css('height',screenHeight-88);
+				if ($('.footer-following').hasClass('selected')) {  
 	        		fols_page.query(q, {
 						success: function(results) {
 							var resultsAsJSON = results.toJSON();
 							//FOLLOWINGS
 							$("#footer-container").html('');
 						   	for(var i = 0; i < resultsAsJSON.length; i++) {
-						    	$("#footer-container").append("<a href='http://eraytonyali.com/invidio/templates/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + 
-							    		"/artist.html' class='four columns artist-btn'><img class='artist-img' src='http://eraytonyali.com/invidio/static/img/music/artists/"+ 
+						    	$("#footer-container").append("<a href='http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + 
+							    		"/artist.html' class='four columns artist-btn'><img class='artist-img' src='http://inspiredapp.tv/img/music/artists/"+ 
 							    		resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() +"/"+ resultsAsJSON[i]['cover_image'] +"' /><div class='artist-name'>"+ 
 							    		resultsAsJSON[i]['artist_name'] +"</div></a> ");
 						    }
 						}
 				 	});
-	        	} else {
+	        	} else {   
 	        		marks_page.query(b, {
 					    success: function(results) {
 						    var resultsAsJSON = results.toJSON();
 						    //BOOKMARKS
 						    $("#footer-container").html('');
 					 	    for(var i = 0; i < resultsAsJSON.length; i++) {
-								$("#footer-container").append("<a href='http://eraytonyali.com/invidio/templates/product.php?video_url=" + resultsAsJSON[i]['video_url'] + "&artist_name=" + resultsAsJSON[i]['artist_name'] + 
-								"&product_image=" + resultsAsJSON[i]['product_image'] + "&product_title=" + resultsAsJSON[i]['product_title'] + "' class='look-item'><img class='look-item-img' src='" + 
+								$("#footer-container").append("<a href='" + resultsAsJSON[i]['buy_url'] + "' target='_blank' class='look-item'><img class='look-item-img' src='" + 
 								resultsAsJSON[i]['product_image'] + "' /><div class='look-item-info'><div class='look-item-title'>" + resultsAsJSON[i]['product_title'] + "</div></div></a> ");
+								
 							}
 				  	  	}
 				  	});
@@ -290,10 +287,74 @@ $(document).ready(function(){
     });
 
     $("#footer-container").bind("oanimationend animationend webkitAnimationEnd", function(){
-        if($("#footer-container").hasClass('move-up')) $("#footer-container").addClass('move-up-final');
-        if($("#footer-container").hasClass('move-down')) $("#footer-container").addClass('move-down-final');
+        if($("#footer-container").hasClass('move-up')){
+			$("#footer-container").addClass('move-up-final');
+		}	
+        if($("#footer-container").hasClass('move-down')){
+			$("#footer-container").addClass('move-down-final');
+		}	
     });   
+// Swipe Left to Delete Following items
+  var PANEL_SPEED = 350,
+      PANEL_EASING_1 = 'cubic-bezier(0.23,1,0.32,1)',
+      PANEL_EASING_2 = 'cubic-bezier(.09,.32,.57,1.65)';  
+ 
+ $('.artist-btn').live("swipeleft", function(e){
+    $('.artist-btn').animate({"left": '0px'}, "slow");
+    $('.unfollow-btn').remove();
+    $(this).append('<div class="unfollow-btn">UNFOLLOW</div>'); 
+    $(this).animate({"left": '-75px'}, "slow"); 
+	
+	e.preventDefault(); 
+	e.stopImmediatePropagation();
+  });
+  
+  $('.artist-btn').live('swiperight', function(e){
+    $('.unfollow-btn').remove();
+    $('.artist-btn').animate({"left": '0'}, "slow");
+    e.preventDefault();
+	e.stopImmediatePropagation();    
+  }); 
+  
+// The Unfollow Button Functionality
+$('.unfollow-btn').live(click, function(e){
+      $(this).parent().fadeOut(400, function() {
+		$(this).remove();
+	  });
+      $('.unfollow-btn').remove();
+      e.preventDefault();
+    });    
+  
+	
+//Swipe Left to Delete Bookmarks
+  var BPANEL_SPEED = 350,
+      BPANEL_EASING_1 = 'cubic-bezier(0.23,1,0.32,1)',
+      BPANEL_EASING_2 = 'cubic-bezier(.09,.32,.57,1.65)'; 
 
+  $('.look-item').live('swipeleft', function(e){
+    $('.look-item').animate({"left": '0px'}, "slow");
+    $('.delete-btn').remove();
+    $(this).append('<div class="delete-btn">DELETE</div>'); 
+    $(this).animate({"left": '-75px'}, "slow"); 
+    e.preventDefault();  
+	e.stopImmediatePropagation();
+  });
+  $('.look-item').live('swiperight', function(e){
+    $('.delete-btn').remove();
+    $('.look-item').animate({"left": '0'}, "slow");
+    e.preventDefault(); 
+	e.stopImmediatePropagation();	
+  });   	
+
+ //The Delete Button functionality
+$('.delete-btn').live(click, function(e){
+      $(this).parent().fadeOut(400, function() {
+		$(this).remove();
+	  });
+      $('.delete-btn').remove();
+      e.preventDefault();
+    });  
+ 
 //Video Screen
 	$(".video-poster iframe").css({
 		width: '100%',
@@ -379,7 +440,7 @@ $(document).ready(function(){
     	$(".footer").css('bottom','0');
     	$(".close-retailer-btn, .footer-retailer-back, .footer-retailer-fwd").hide();
     	$(".name").text("Inspired").css("font-size","32px").fadeIn();
-    	$(".name").attr("onclick", "location.reload();location.href='../../../music.html'");  
+    	$(".name").attr("onclick", "location.href='../../../music.html'");  
     	$("#footer-container").css('overflow-y','scroll');    		  	
         $('#footer-container').attr('class', '').addClass('move-down');
         $("#footer-container-iframe").attr('src','');

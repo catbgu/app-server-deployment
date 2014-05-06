@@ -10,34 +10,102 @@ var items = new artists();
 var q = new StackMob.Collection.Query();
 q.orderAsc('artist_name').equals('active', true);
 
+//Get Bookmarks and Following
+var Follow_page = StackMob.Model.extend({ schemaName: 'Follows' });
+var Follows_page = StackMob.Collection.extend({ model: Follow_page }); 
+var fols_page = new Follows_page();
+var q2 = new StackMob.Collection.Query();
+var Bookmark_page = StackMob.Model.extend({ schemaName: 'Bookmarks' });
+var Bookmarks_page = StackMob.Collection.extend({ model: Bookmark_page }); 
+var marks_page = new Bookmarks_page();
+var b2 = new StackMob.Collection.Query();
+b2.orderAsc('product_title').equals('username', StackMob.getLoggedInUser());
+q2.orderAsc('artist_name').equals('username', StackMob.getLoggedInUser());
+	 
+//Dynamic Bookmark insertion
+marks_page.query(b2, {
+	success: function(results) {
+		var resultsAsJSON = results.toJSON();
+		for(var i = 0; i < resultsAsJSON.length; i++) {
+			$('.bookmark-list').append("<li class='drop-item'><a href='" + resultsAsJSON[i]['buy_url'] + "' target='_blank'><img class='look-item-img' src='" + resultsAsJSON[i]['product_image'] + "' /><span>" + resultsAsJSON[i]['product_title'] + "</span></a></li>");
+		}
+		//The DELETE button
+		$('.bookmark-list .drop-item').hover(function(e){
+			$(this).prepend('<h5>X</h5>');
+		},function(e){
+				$(this).find('h5').remove();
+		});
+	}
+});	
+// On clicking the delete, remove item from database too.
+$('.bookmark-list .drop-item h5').live('click', function(e) {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+	
+	$(this).parent().fadeOut(400, function() {
+		$(this).remove();
+	});
+});
+
+//Dynamic Following insertion
+fols_page.query(q2, {
+	 success: function(results) {
+		var resultsAsJSON = results.toJSON();
+		//FOLLOWING
+			for(var i = 0; i < resultsAsJSON.length; i++) {
+			$('.following-list').append("<li class='drop-item'><a href='http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + "/artist.html'><img class='artist-img' src='http://inspiredapp.tv/img/music/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + "/" + resultsAsJSON[i]['cover_image'] +"' /><span>" + resultsAsJSON[i]['artist_name'] + "</span></a></li>");
+		}
+		//The UNFOLLOW button
+		$('.following-list .drop-item').hover(function(e){
+			$(this).prepend('<h5>X</h5>');
+		},function(e){
+				$(this).find('h5').remove();
+		});
+	 }
+});
+//On clicking unfollow button, remove from database too.
+$('.following-list .drop-item h5').live('click', function(e) {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+	
+	$(this).parent().fadeOut(400, function() {
+		$(this).remove();
+	});
+});
+
 items.query(q, {
   success: function(results) {
     var resultsAsJSON = results.toJSON();
     for(var i = 0; i < resultsAsJSON.length; i++) {
       $( "#grid" ).append(""+
-			"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(' ', '-').toLowerCase()  + "/artist.html\"' class='four columns artist-btn'>" +
+			"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(' ', '-').toLowerCase()  + "/artist.html\"' class='four columns artist-btn'>" +
 		    	"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + "/small.png'>" +
 			    "<div class='artist-name'>" + resultsAsJSON[i]['artist_name'] + "</div>" +
 		    "</a>");
-    }
+	 }
+	
     var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
 	var tablet = navigator.userAgent.match(/iPad/i);
+	
 	if(!mobile){
+	
 		//Music.html page
 		$(".artist-btn").removeClass("four columns artist-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='music-icon' src='http://inspiredapp.tv/img/icons/music-icon-small.png' />");
 		$(".artist-name").wrap("<div class='video-info'></div>");
 		$(".artist-name").wrapInner("<h5></h5>");
 		
-		/* Ddisabling the footer for PC */
-		$('.footer').css('display', 'none');
-		if(!tablet) {
-			$('.footer').css('display', 'none');
+		
+		if(tablet) {
+			$('.footer').css('display', 'block');
 		}
+    } else {
+		$('.footer').css('display', 'block');
 	}
   }
 });
 
 $(document).ready(function(){
+
 	//MUSIC.HTML IMAGE SLIDER
 	var featured = StackMob.Model.extend({ schemaName: 'Music_Video' });
 	var featured_artists = StackMob.Collection.extend({ model: featured }); 
@@ -65,7 +133,7 @@ $(document).ready(function(){
 
 			 	$('.item').each(function(){
 					$('.item' + b).attr('src', 'http://inspiredapp.tv/img/music/artists/' + firstartist.replace(/\ /g, '-').toLowerCase() + '/large.png');
-					$('.item' + b).attr('onclick', 'location.reload();location.href="http://inspiredapp.tv/artists/' + firstartist.replace(/\ /g, '-').toLowerCase() + '/artist.html"');
+					$('.item' + b).attr('onclick', 'location.href="http://inspiredapp.tv/artists/' + firstartist.replace(/\ /g, '-').toLowerCase() + '/artist.html"');
 			  	});
 			  	b++;
 			}
@@ -83,7 +151,8 @@ $(document).ready(function(){
     var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
 	var tablet = navigator.userAgent.match(/iPad/i);
     if(!mobile && !tablet){
-	
+		
+		
 		/* -- Adding the settings dropdown to top right -- */
 		$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
 
@@ -103,26 +172,22 @@ $(document).ready(function(){
 		
 		/* This is the dropdown for Bookmarks -height is dynamic */
 		$('.dropdown-list').after('<ul class="bookmark-list"></ul>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item1</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item2</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item3</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item4</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item5</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item6</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item7</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item8</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item9</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item10</li>');
+		/*$('.bookmark-list').append('<li class="drop-item"><a href="https://www.google.com/" target="_blank"><img class="look-item-img" src="http://www.healthyblackwoman.com/wp-content/uploads/2013/03/red-patent-leather-pump-high-heel.jpg"/><span>bookmark item1</span></a></li>');
+		$('.bookmark-list').append('<li class="drop-item"><a href="https://www.google.com/" target="_blank"><img class="look-item-img" src="http://www.healthyblackwoman.com/wp-content/uploads/2013/03/red-patent-leather-pump-high-heel.jpg"/><span>bookmark item2</span></a></li>');
+		$('.bookmark-list').append('<li class="drop-item"><a href="https://www.google.com/" target="_blank"><img class="look-item-img" src="http://www.healthyblackwoman.com/wp-content/uploads/2013/03/red-patent-leather-pump-high-heel.jpg"/><span>bookmark item3</span></a></li>');
+		$('.bookmark-list').append('<li class="drop-item"><a href="https://www.google.com/" target="_blank"><img class="look-item-img" src="http://www.healthyblackwoman.com/wp-content/uploads/2013/03/red-patent-leather-pump-high-heel.jpg"/><span>bookmark item4</span></a></li>');
+		$('.bookmark-list').append('<li class="drop-item"><a href="https://www.google.com/" target="_blank"><img class="look-item-img" src="http://www.healthyblackwoman.com/wp-content/uploads/2013/03/red-patent-leather-pump-high-heel.jpg"/><span>bookmark item5</span></a></li>');*/
+
 		
 		/* This is the dropdown for Following -height is dynamic */
 		$('.dropdown-list').after('<ul class="following-list"></ul>');
-		$('.following-list').append('<li class="drop-item">Following Item1</li>');
-		$('.following-list').append('<li class="drop-item">Following Item2</li>');
-		$('.following-list').append('<li class="drop-item">Following Item3</li>');
-		$('.following-list').append('<li class="drop-item">Following Item4</li>');
 		
 		// Navigation + Sliding Animations
 		$('#bookmark-tab').live('click', function(e) {
+			if($('.bookmark-list').html() == '') {
+				$('.bookmark-list').hide();
+				return;
+			}
 			$('.bookmark-list').slideToggle(200);
 			
 			if($('.following-list').css('display') == 'block') {
@@ -131,6 +196,10 @@ $(document).ready(function(){
 		});
 		
 		$('#following-tab').live('click', function(e) {
+			if($('.following-list').html() == '') {
+				$('.following-list').hide();
+				return;
+			}
 			$('.following-list').slideToggle(200);
 			
 			if($('.bookmark-list').css('display') == 'block') {
@@ -138,6 +207,10 @@ $(document).ready(function(){
 			}
 		});
 		
+		
+
+		
+
 		//Desktop Settings Menu
 			/*	Reveal Menu */
 			$('#settings-tab').on('click', function(e){
@@ -147,7 +220,7 @@ $(document).ready(function(){
 				e.preventDefault();	
 				if( !$('.content').hasClass('inactive') ){				
 					// Slide and scale content		
-					//$('.footer').hide();
+					$('.footer').hide();
 					$('.content, .settings-menu').addClass('inactive');
 					setTimeout(function(){ $('.content').addClass('flag'); }, 100);
 					
@@ -181,7 +254,7 @@ $(document).ready(function(){
 				// Reset menu
 				setTimeout(function(){
 					$('li').removeClass('visible');
-					$('.footer').fadeIn(100);
+					//$('.footer').fadeIn(100);
 				}, 300);
 			}
 			
@@ -284,6 +357,7 @@ $(document).ready(function(){
  
 		
 		$('.btn.with-icon.white-top').live('click', function(e) {
+
 			$('.dropdown-list').slideToggle(300);
 			
 			if(($('.bookmark-list').css('display') == 'block') || ($('.following-list').css('display') == 'block')) {
@@ -296,7 +370,9 @@ $(document).ready(function(){
 		  e.stopImmediatePropagation();
 		  e.preventDefault();
 		});
-    }
+		
+		
+    } 
 	  	
 });
 

@@ -185,8 +185,7 @@
 
     toggle_bg : function (modal) {
       if ($('.reveal-modal-bg').length === 0) {
-        this.settings.bg = $('<div />', {'class': this.settings.bgClass})
-          .appendTo('body');
+        this.settings.bg = $('<div />', {'class': this.settings.bgClass}).appendTo('.screen');
       }
 
       if (this.settings.bg.filter(':visible').length > 0) {

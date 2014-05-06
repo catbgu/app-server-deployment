@@ -3,7 +3,70 @@ StackMob.init({
   publicKey:        'da5f9b0d-676e-4d57-be03-e8436eb6313b',
   apiVersion:       1
 });
+//Get Bookmarks and Following
+var Follow_page = StackMob.Model.extend({ schemaName: 'Follows' });
+var Follows_page = StackMob.Collection.extend({ model: Follow_page }); 
+var fols_page = new Follows_page();
+var q2 = new StackMob.Collection.Query();
+var Bookmark_page = StackMob.Model.extend({ schemaName: 'Bookmarks' });
+var Bookmarks_page = StackMob.Collection.extend({ model: Bookmark_page }); 
+var marks_page = new Bookmarks_page();
+var b2 = new StackMob.Collection.Query();
+b2.orderAsc('product_title').equals('username', StackMob.getLoggedInUser());
+q2.orderAsc('artist_name').equals('username', StackMob.getLoggedInUser());
+	 
+//Dynamic Bookmark insertion
+marks_page.query(b2, {
+	success: function(results) {
+		var resultsAsJSON = results.toJSON();
+		for(var i = 0; i < resultsAsJSON.length; i++) {
+			$('.bookmark-list').append("<li class='drop-item'><a href='" + resultsAsJSON[i]['buy_url'] + "' target='_blank'><img class='look-item-img' src='" + resultsAsJSON[i]['product_image'] + "' /><span>" + resultsAsJSON[i]['product_title'] + "</span></a></li>");
+		}
+		//The DELETE button
+		$('.bookmark-list .drop-item').hover(function(e){
+			$(this).prepend('<h5>X</h5>');
+		},function(e){
+				$(this).find('h5').remove();
+		});
+	}
+});	
+// On clicking the delete, remove item from database too.
+$('.bookmark-list .drop-item h5').live('click', function(e) {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+	
+	$(this).parent().fadeOut(400, function() {
+		$(this).remove();
+	});
+});
+
+//Dynamic Following insertion
+fols_page.query(q2, {
+	 success: function(results) {
+		var resultsAsJSON = results.toJSON();
+		//FOLLOWING
+			for(var i = 0; i < resultsAsJSON.length; i++) {
+			$('.following-list').append("<li class='drop-item'><a href='http://inspiredapp.tv/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + "/artist.html'><img class='artist-img' src='http://inspiredapp.tv/img/music/artists/" + resultsAsJSON[i]['artist_name'].replace(/\ /g, '-').toLowerCase() + "/" + resultsAsJSON[i]['cover_image'] +"' /><span>" + resultsAsJSON[i]['artist_name'] + "</span></a></li>");
+		}
+		//The UNFOLLOW button
+		$('.following-list .drop-item').hover(function(e){
+			$(this).prepend('<h5>X</h5>');
+		},function(e){
+				$(this).find('h5').remove();
+		});
+	 }
+});
+//On clicking unfollow button, remove from database too.
+$('.following-list .drop-item h5').live('click', function(e) {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+	
+	$(this).parent().fadeOut(400, function() {
+		$(this).remove();
+	});
+});
 $(document).ready(function() {
+	$("a.back-btn").attr('onclick','');
 	$("a.back-btn").on('click',function(){
 	  window.location = "http://inspiredapp.tv/app/templates/music.html";    
 	});
@@ -16,31 +79,26 @@ $(document).ready(function() {
     var mobile = navigator.userAgent.match(/iPhone|Android|Windows Phone|BlackBerry/i);
 	var tablet = navigator.userAgent.match(/iPad/i);
     if(!mobile && !tablet){
+		// This is temporary
+		//	$('.footer').css('display', 'block');
 		
 		/* -- Adding the settings dropdown to top right -- */
 		$('.top-bar').prepend('<a name="dropdown-btn" class="btn with-icon white-top" style="width: 175px;text-align:center;"><div class="divider"></div><span class></span></a>'); 
 
 		/* -- Adding the 'Music Videos/New Releases' panel to the left -- */
-		$('.top-bar').append('<div class="panel-container"><ul name="artist-videos" class="artist-page artist-videos-panel"><h5>New Releases</h5></ul></div>');
+		$('div.row.banner-row').before().prepend('<div class="panel-container"><ul name="artist-videos" class="artist-page artist-videos-panel"><h5>New Releases</h5></ul></div>');
+		
 		
 		/* -- Need to dynamically insert other artist music videos: No more than 4 videos, b/c of more videos button -- */
 		$('.artist-videos-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
 			"<div>Hurricane (English version)</div>" +
 		"</a>"+
 		"</li>"
 		);
 		$('.artist-videos-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
-			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
-			"<div>Hurricane (English version)</div>" +
-		"</a>"+
-		"</li>"
-		);
-		
-		$('.artist-videos-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
 			"<div>Hurricane (English version)</div>" +
 		"</a>"+
@@ -48,7 +106,15 @@ $(document).ready(function() {
 		);
 		
 		$('.artist-videos-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
+			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
+			"<div>Hurricane (English version)</div>" +
+		"</a>"+
+		"</li>"
+		);
+		
+		$('.artist-videos-panel').append("<li class='drop-item'>"+
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/antonia/Hurricane (English version).html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/antonia/Hurricane (English version).png'>" +
 			"<div>Hurricane (English version)</div>" +
 		"</a>"+
@@ -63,28 +129,28 @@ $(document).ready(function() {
 		
 		/* -- Need to dynamically insert the artists pages and photos here: No more than 4 artists b/c "more artists" button is there.-- */
 		$('.similar-artists-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/lily-allen/artist.html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/lily-allen/artist.html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/lily-allen/small.png'>" +
 			"<div>Lily Allen</div>" +
 		"</a>"+
 		"</li>"
 		);
 		$('.similar-artists-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/kylie-minogue/artist.html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/kylie-minogue/artist.html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/kylie-minogue/small.png'>" +
 			"<div>Kylie Minogue</div>" +
 		"</a>"+
 		"</li>"
 		);
 		$('.similar-artists-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/kacey-musgraves/artist.html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/kacey-musgraves/artist.html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/kacey-musgraves/small.png'>" +
 			"<div>Kacey Musgraves</div>" +
 		"</a>"+
 		"</li>"
 		);
 		$('.similar-artists-panel').append("<li class='drop-item'>"+
-		"<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/jennifer-hudson/artist.html\"'>" +
+		"<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/jennifer-hudson/artist.html\"'>" +
 			"<img class='artist-img' src='http://inspiredapp.tv/img/music/artists/jennifer-hudson/small.png'>" +
 			"<div>Jennifer Hudson</div>" +
 		"</a>"+
@@ -110,49 +176,16 @@ $(document).ready(function() {
 		
 		/* This is the dropdown for Bookmarks -height is dynamic */
 		$('.dropdown-list').after('<ul class="bookmark-list"></ul>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item1</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item2</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item3</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item4</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item5</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item6</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item7</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item8</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item9</li>');
-		$('.bookmark-list').append('<li class="drop-item">Bookmark Item10</li>');
 		
 		/* This is the dropdown for Following -height is dynamic */
 		$('.dropdown-list').after('<ul class="following-list"></ul>');
-		$('.following-list').append('<li class="drop-item">Following Item1</li>');
-		$('.following-list').append('<li class="drop-item">Following Item2</li>');
-		$('.following-list').append('<li class="drop-item">Following Item3</li>');
-		$('.following-list').append('<li class="drop-item">Following Item4</li>');
-		
-		
-		/* Same panel-container code as below, but for Firefox */
-		if (navigator.userAgent.search("Firefox") >= 0) {
-			var halfWidth = $('.page-container').width()/2;
-		
-			var fullWidth = $('.page-container').width();
-			
-			var currMarg = parseInt($('.panel-container').css('margin-right'));
-		
-			$('.panel-container').css('margin-right', currMarg+fullWidth+halfWidth+20+'px');
-			$('.panel-container').css('margin-top', '10px');
-		} else {
-		/* Moving the panel-container (containing Music Videos, and Similar Artists) over to the left of YouTube video */
-			var halfPanelWidth = $('.panel-container').width()/2;
-			
-			var halfWidth = $('.page-container').width()/2 + halfPanelWidth + 10;
-			
-			var currMarg = parseInt($('.panel-container').css('margin-right'));
-			
-			$('.panel-container').css('margin-right', currMarg+halfWidth+'px');
-			$('.panel-container').css('margin-top', '10px');
-		}
 		
 		// Navigation + Sliding Animations
 		$('#bookmark-tab').live('click', function(e) {
+			if($('.bookmark-list').html() == '') {
+				$('.bookmark-list').hide();
+				return;
+			}
 			$('.bookmark-list').slideToggle(200);
 			
 			if($('.following-list').css('display') == 'block') {
@@ -161,6 +194,10 @@ $(document).ready(function() {
 		});
 		
 		$('#following-tab').live('click', function(e) {
+			if($('.following-list').html() == '') {
+				$('.following-list').hide();
+				return;
+			}
 			$('.following-list').slideToggle(200);
 			
 			if($('.bookmark-list').css('display') == 'block') {
@@ -211,7 +248,7 @@ $(document).ready(function() {
 				// Reset menu
 				setTimeout(function(){
 					$('li').removeClass('visible');
-					$('.footer').fadeIn(100);
+					//$('.footer').fadeIn(100);
 				}, 300);
 			}
 			
@@ -355,7 +392,7 @@ items.query(q, {
       }
 
       $( "#grid" ).append(""+
-          "<a href='javascript:;' onclick='location.reload();location.href=\"http://inspiredapp.tv/artists/" +  feat_artist.replace(/\ /g, '-').toLowerCase() + "/" + resultsAsJSON[i].video_title + ".html\"' class='four columns artist-video-btn'>" +
+          "<a href='javascript:;' onclick='location.href=\"http://inspiredapp.tv/artists/" +  feat_artist.replace(/\ /g, '-').toLowerCase() + "/" + resultsAsJSON[i].video_title + ".html\"' class='four columns artist-video-btn'>" +
             "<img class='video-img' src='http://inspiredapp.tv/img/music/artists/" + feat_artist.replace(/\ /g, '-').toLowerCase() + "/" + resultsAsJSON[i].video_title + ".png' />" +
             "<div class='video-info'>" +
               "<div class='video-title'>" +
@@ -373,12 +410,14 @@ items.query(q, {
       $(".artist-video-btn").removeClass("four columns artist-video-btn").addClass("centred").wrap("<li class='element'></li>").prepend("<img class='shop-icon' src='http://inspiredapp.tv/img/icons/shop-icon-small.png' style='width: 55px; height: 55px;' />");
       $(".video-title").removeClass("video-title").addClass("artist-name"); 
 	  
-	  /* Ddisabling the footer for PC */
-		$('.footer').css('display', 'none');
-		if(!tablet) {
-			$('.footer').css('display', 'none');
+		if(tablet) {
+			$('.footer').css('display', 'block');
+			$('a.back-btn').css('display','block');
 		}
-    }
+    } else {
+		$('.footer').css('display', 'block');
+		$('a.back-btn').css('display','block');
+	}
   }
 });
 

@@ -86,7 +86,7 @@
             <li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Finvid.io" target="_blank"><img src="http://inspiredapp.tv/img/webicon-facebook.svg" type="image/svg+xml" /></a></li>
             <li><a href="https://twitter.com/share?url=http%3A%2F%2Finvid.io" target="_blank"><img src="http://inspiredapp.tv/img/webicon-twitter.svg" type="image/svg+xml" /></a></li>        
             <li><a href="https://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.flickr.com%2Fphotos%2Fkentbrew%2F6851755809%2F&media=http%3A%2F%2Ffarm8.staticflickr.com%2F7027%2F6851755809_df5b2051c9_z.jpg&description=Next%20stop%3A%20Pinterest" data-pin-do="buttonPin"><img src="../../../../static/img/webicon-pinterest.svg" type="image/svg+xml" /></a></li>
-            <li><a href="mailto:?subject=Check this mad outfit&amp;body=I found this outift on http://www.invid.io/~~~."><img src="http://inspiredapp.tv/img/webicon-mail.svg" type="image/svg+xml" /></a></li>    
+            <li><a href="mailto:addressHere@email.com?subject=Check this mad outfit&amp;body=I found this outift on http://www.invid.io/~~~."><img src="http://inspiredapp.tv/img/webicon-mail.svg" type="image/svg+xml" /></a></li>    
           </ul>
           <a class="close-reveal-modal">&#215;</a>
         </div>
